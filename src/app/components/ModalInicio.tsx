@@ -84,7 +84,7 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
 
             <p className="mb-8 text-lg">
               Regístrate aquí y empieza a disfrutar la experiencia de ser
-              miembro Cinemex Loop.
+              miembro Cinebol.
             </p>
 
             <div className="space-y-4 text-base">

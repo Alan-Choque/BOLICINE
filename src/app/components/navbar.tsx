@@ -7,10 +7,10 @@ import Image from 'next/image';
 import Modal from './ModalInicio'; // Importa el componente Modal
 
 const navigation = [
-  { name: 'Inicio', href: '#', current: false },
-  { name: 'Promociones', href: '#', current: false },
-  { name: 'Candy Bar', href: '#', current: false },
-  { name: 'Preventas', href: '#', current: false },
+  { name: 'Inicio', href: '/', current: false },
+  { name: 'Promociones', href: '/promociones', current: false },
+  { name: 'Candy Bar', href: '/candyBar', current: false },
+  { name: 'Preventas', href: '/preventas', current: false },
 ];
 
 function classNames(...classes: string[]) {
@@ -27,7 +27,7 @@ export default function Navbar() {
   return (
     <>
       {/* Navbar */}
-      <nav className="bg-white  text-black shadow">
+      <nav className="bg-gray-900  text-white shadow">
         <div className="mx-auto max-w-7xl px-2 sm:px-10 lg:px-10">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
@@ -50,7 +50,7 @@ export default function Navbar() {
                   aria-current={item.current ? 'page' : undefined}
                   className={classNames(
                     item.current ? 'bg-gray-900' : 'hover:bg-white-700 hover:text-red-500',
-                    'text-gray-900 rounded-md px-3 py-2 text-lg font-medium',
+                    'text-white rounded-md px-3 py-2 text-lg font-medium',
                     'rounded-md px-3 py-2 text-lg font-medium text-black'
                   )}
                 >

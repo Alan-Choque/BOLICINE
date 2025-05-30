@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/navbar";
-
+import MovieCard from "./components/card";
+import CarruselEstrenos from "./components/carruselEstrenos";
+import CarruselPeliculas from "./components/carruselPeliculas";
+import Footer from "./components/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +35,7 @@ export default function RootLayout({
         <Navbar />
         {children}
       </body>
+      <Footer />
     </html>
   );
 }
