@@ -6,13 +6,13 @@ const MovieCard = () => {
       <div className="">
         <div className="flex">
           <img
-            src="https://gemmadaviesasmedia.wordpress.com/wp-content/uploads/2015/01/moving-avatar-1.gif"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkLQDApSHnbeOpFQvWxaY47k0rI3DLr1F4Fg&s"
             alt="Movie Poster"
             className="w-full h-88 object-cover blur-xs"
           />
           <div className="absolute px-16 py-22 w-full flex">
             <img
-              src="https://gemmadaviesasmedia.wordpress.com/wp-content/uploads/2015/01/moving-avatar-1.gif"
+              src="https://www.ecartelera.com/images/img/233200/233294_destino-final-6-lazos-de-sangre-lanza-su-primer.jpg"
               alt="Movie Poster"
               className="w-34 h-48 object-cover"
             />

@@ -8,9 +8,10 @@ import Modal from './ModalInicio'; // Importa el componente Modal
 
 const navigation = [
   { name: 'Inicio', href: '/', current: false },
-  { name: 'Promociones', href: '/promociones', current: false },
+  { name: 'Cartelera', href: '/cartelera', current: false },
   { name: 'Candy Bar', href: '/candyBar', current: false },
-  { name: 'Preventas', href: '/preventas', current: false },
+  { name: 'Mis compras', href: '/compras', current: false },
+  { name: 'Cinebol +', href: '/cinebolplus', current: false },
 ];
 
 function classNames(...classes: string[]) {
