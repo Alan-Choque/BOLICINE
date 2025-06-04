@@ -1,29 +1,29 @@
 // src/app/components/Navbar.tsx
 "use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 //import { UserCircleIcon } from '@heroicons/react/24/outline';
-import Image from 'next/image';
-//import Modal from './ModalInicio'; // Importa el componente Modal
-import Link from 'next/link';
+import Image from "next/image";
+import Login from "./login"; // Importa el componente Modal
+import Link from "next/link";
 
 const navigation = [
-  { name: 'Inicio', href: '/', current: false },
-  { name: 'Cartelera', href: '/cartelera', current: false },
-  { name: 'Candy Bar', href: '/candyBar', current: false },
-  { name: 'Mis compras', href: '/compras', current: false },
-  { name: 'Cinebol +', href: '/cinebolplus', current: false },
+  { name: "Inicio", href: "/", current: false },
+  { name: "Cartelera", href: "/cartelera", current: false },
+  { name: "Candy Bar", href: "/candyBar", current: false },
+  { name: "Mis compras", href: "/compras", current: false },
+  { name: "Cinebol +", href: "/cinebolplus", current: false },
 ];
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function Navbar() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
 
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
+  const toggleLogin = () => {
+    setIsLoginOpen(!isLoginOpen);
   };
 
   return (
@@ -40,7 +40,9 @@ export default function Navbar() {
                 width={40}
                 height={40}
               />
-              <span className="ml-2 text-lg font-extrabold text-red-500">CINEBOL</span>
+              <span className="ml-2 text-lg font-extrabold text-red-500">
+                CINEBOL
+              </span>
             </div>
 
             {/* Enlaces de navegación */}
@@ -49,11 +51,13 @@ export default function Navbar() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  aria-current={item.current ? 'page' : undefined}
+                  aria-current={item.current ? "page" : undefined}
                   className={classNames(
-                    item.current ? 'bg-gray-900' : 'hover:bg-white-700 hover:text-red-500',
-                    'text-white rounded-md px-3 py-2 text-lg font-medium',
-                    'rounded-md px-3 py-2 text-lg font-medium text-black'
+                    item.current
+                      ? "bg-gray-900"
+                      : "hover:bg-white-700 hover:text-red-500",
+                    "text-white rounded-md px-3 py-2 text-lg font-medium",
+                    "rounded-md px-3 py-2 text-lg font-medium text-black"
                   )}
                 >
                   {item.name}
@@ -65,7 +69,7 @@ export default function Navbar() {
             <div className="flex items-center">
               <button
                 type="button"
-                onClick={toggleModal}
+                onClick={toggleLogin}
                 className="relative rounded-full bg-white p-1 text-red-500 hover:text-gray-300 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
               >
                 <span className="sr-only">Open user menu</span>
@@ -76,8 +80,8 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Modal */}
+      {/* Login */}
+      <Login isOpen={isLoginOpen} onClose={toggleLogin} />
     </>
   );
 }
-//<Modal isOpen={isModalOpen} onClose={toggleModal} />
