@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-//import Register from "./RegisterForm";
+import Register from "./register";
 
 interface LoginProps {
   isOpen: boolean;
@@ -271,7 +271,7 @@ export default function Login({ isOpen, onClose }: LoginProps) {
           </div>
         </div>
       </div>
+      <Register isOpen={isRegOpen} onClose={toggleRegister} />
     </div>
   );
 }
-//<Register isOpen={isRegOpen} onClose={toggleRegister} />
