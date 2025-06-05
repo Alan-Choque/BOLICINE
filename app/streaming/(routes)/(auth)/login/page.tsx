@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Checkbox } from "@/components/ui/checkbox";
 
-import { Terms } from "./Terms";
+import { Terms } from "../components/Terms";
 import { LoginForm } from "./LoginForm";
 
 export default async function LoginPage() {
