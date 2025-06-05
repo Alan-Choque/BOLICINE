@@ -6,6 +6,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import Details from "../../components/details";
+import { Button } from "@/components/ui/button";
 
 const moviePage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -19,17 +21,22 @@ const moviePage = ({ params }: { params: { id: string } }) => {
           className="rounded-lg"
         />
       </div>
-      <Accordion type="single" collapsible>
-        <AccordionItem value="item-1">
-          <AccordionTrigger>Is it accessible?</AccordionTrigger>
-          <AccordionContent>
-            Yes. It adheres to the WAI-ARIA design pattern.
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+      <div className="px-10 py-4">
+        <Accordion type="single" collapsible>
+          <AccordionItem value="item-1">
+            <AccordionTrigger>Detalles de la película</AccordionTrigger>
+            <AccordionContent>
+              <Details />
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </div>
       <div className="justify-center items-center flex flex-col mt-4">
         <h1>Escenario</h1>
         <SeleccionAsientosPage />
+      </div>
+      <div className="flex justify-center items-center m-4">
+        <Button>Reservar</Button>
       </div>
     </div>
   );
