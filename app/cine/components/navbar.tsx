@@ -8,11 +8,11 @@ import Login from "./login"; // Importa el componente Modal
 import Link from "next/link";
 
 const navigation = [
-  { name: "Inicio", href: "/cine", current: false },
+  { name: "Inicio", href: "/", current: false },
   { name: "Cartelera", href: "/cine/cartelera", current: false },
   { name: "Candy Bar", href: "/cine/candyBar", current: false },
   { name: "Mis compras", href: "/cine/compras", current: false },
-  { name: "Cinebol +", href: "/cine/streaming", current: false },
+  { name: "Cinebol +", href: "/streaming", current: false },
 ];
 
 function classNames(...classes: string[]) {
@@ -40,7 +40,7 @@ export default function Navbar() {
                 width={40}
                 height={40}
               />
-              <span className="ml-2 text-lg font-extrabold text-red-500">
+              <span className="ml-2 text-lg font-extrabold text-white">
                 CINEBOL
               </span>
             </div>
