@@ -31,7 +31,7 @@ const CarruselPeliculas = () => {
             title={movie.title}
             description={movie.description}
             imageUrl={movie.imageUrl}
-            href={`/movies/${movie.id}`}>
+            href={`/cine/movies/${movie.id}`}>
           </MovieCard>
         ))}
         <div className="absolute justify-between mt-34 flex w-full">

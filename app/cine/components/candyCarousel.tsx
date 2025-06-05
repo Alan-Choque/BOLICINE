@@ -32,7 +32,7 @@ const CarruselCandy = () => {
             title={candys.title}
             description={candys.description}
             imageUrl={candys.imageUrl}
-            href={`/candys/${candys.id}`}>
+            href={`/cine/candys/${candys.id}`}>
           </CandyCard>
         ))}
         <div className="absolute justify-between mt-34 flex w-full">

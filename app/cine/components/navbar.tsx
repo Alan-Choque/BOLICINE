@@ -8,11 +8,11 @@ import Login from "./login"; // Importa el componente Modal
 import Link from "next/link";
 
 const navigation = [
-  { name: "Inicio", href: "/", current: false },
-  { name: "Cartelera", href: "/cartelera", current: false },
-  { name: "Candy Bar", href: "/candyBar", current: false },
-  { name: "Mis compras", href: "/compras", current: false },
-  { name: "Cinebol +", href: "/cinebolplus", current: false },
+  { name: "Inicio", href: "/cine", current: false },
+  { name: "Cartelera", href: "/cine/cartelera", current: false },
+  { name: "Candy Bar", href: "/cine/candyBar", current: false },
+  { name: "Mis compras", href: "/cine/compras", current: false },
+  { name: "Cinebol +", href: "/cine/streaming", current: false },
 ];
 
 function classNames(...classes: string[]) {

@@ -24,7 +24,7 @@ const RatedCard = () => {
             title={movie.title}
             description={movie.description}
             imageUrl={movie.imageUrl}
-            href={`/movies/${movie.id}`}></MovieCard>
+            href={`cine/movies/${movie.id}`}></MovieCard>
             <div className="py-8 px-8">
               <h2 className="text-white text-2xl">Destacada de la semana</h2>
               <h2 className="text-red-500 text-3xl mt-1">Destino final</h2>
