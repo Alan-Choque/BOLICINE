@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
+import axios from "axios";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,9 +14,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { formSchema } from "./RegisterForm.form";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export function RegisterForm() {
-
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -27,7 +29,22 @@ export function RegisterForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      await axios.post("/api/auth/register", values)
+
+      toast.success("El usuario se ha registrado correctamente")
+      router.push("/profiles")
+    } catch (error) {
+      console.log(error);
+      toast("Ha ocurrido un error", {
+      description: "No se pudo registrar el usuario.",
+      style: {
+        backgroundColor: "red",
+        color: "white",
+      },
+});
+
+    }
   };
 
   return (
