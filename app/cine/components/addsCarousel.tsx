@@ -34,14 +34,6 @@ const CarruselAdds = () => {
             href={`/cine/adds/${adds.id}`}
           ></AddsCard>
         ))}
-        <div className="absolute justify-between mt-34 flex w-full">
-          <button className="bg-gray-500 text-white rounded-lg hover:bg-blue-600">
-            Previous
-          </button>
-          <button className="bg-gray-500 text-white rounded-lg hover:bg-blue-600 ml-2">
-            Next
-          </button>
-        </div>
       </div>
     </div>
   );

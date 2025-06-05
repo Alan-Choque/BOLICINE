@@ -4,21 +4,21 @@ import CarruselPeliculas from "./cine/components/movieCarousel";
 
 export default function Home() {
   return (
-    <div>
+    <div className="text-black">
       <div>
         <RatedCard />
-        <div className="py-6">
+        <div className="justify-center m-5 bg-red-500 rounded-2xl px-5">
           <CarruselAdds />
         </div>
-        <div className="py-6">
-          <h1 className="text-2xl font-bold mb-4 px-4">Estrenos</h1>
+        <div className="py-6 mx-5">
+          <h1 className="text-2xl font-bold mb-4">Estrenos</h1>
           <CarruselPeliculas />
         </div>
-        <div className="py-6">
+        <div className="justify-center m-5 bg-red-500 rounded-2xl px-5">
           <CarruselAdds />
         </div>
-        <div className="py-6">
-          <h1 className="text-2xl font-bold mb-4 px-4">Todas las peliculas</h1>
+        <div className="py-6 mx-5">
+          <h1 className="text-2xl font-bold mb-4">Todas las peliculas</h1>
           <CarruselPeliculas />
         </div>
       </div>

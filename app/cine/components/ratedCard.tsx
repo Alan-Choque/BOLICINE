@@ -16,18 +16,18 @@ const RatedCard = () => {
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkLQDApSHnbeOpFQvWxaY47k0rI3DLr1F4Fg&s"
             alt="Movie Poster"
-            className="w-full h-120 object-cover blur-xs"
+            className="w-full h-120 object-cover blur-xs brightness-50"
           />
-          <div className="absolute px-16 py-22 w-full flex">
+          <div className="absolute flex justify-center items-center w-xl h-4/6 gap-8 md:flex">
             <MovieCard
             key={movie.id}
             title={movie.title}
             description={movie.description}
             imageUrl={movie.imageUrl}
             href={`cine/movies/${movie.id}`}></MovieCard>
-            <div className="py-8 px-8">
+            <div className="">
               <h2 className="text-white text-2xl">Destacada de la semana</h2>
-              <h2 className="text-red-500 text-3xl mt-1">Destino final</h2>
+              <h2 className="text-red-500 text-3xl mt-1">{movie.title}</h2>
               <button className="px-4 py-2 bg-red-500 text-white hover:bg-red-700 mt-4">
                 Comprar Boletos
               </button>
