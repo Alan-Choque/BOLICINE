@@ -1,11 +1,10 @@
-import CandyCard from "../../components/candyCard";
-import movies from "../../components/movieCarousel";
 import React from "react";
+import SeleccionAsientosPage from "../../components/scenary";
 
-const moviePage = async ({ params }: { params: Promise<{ id: string }> }) => {
-  const { id } = await params;
+const moviePage = ({ params }: { params: { id: string } }) => {
+  const { id } = params;
   return (
-    <div>
+    <div className="text-black">
       moviePage: {id}
       <div className="mt-4">
         <img
@@ -13,6 +12,10 @@ const moviePage = async ({ params }: { params: Promise<{ id: string }> }) => {
           alt={`Movie ${id}`}
           className="rounded-lg"
         />
+      </div>
+      <div className="justify-center items-center flex flex-col mt-4">
+        <h1>Escenario</h1>
+        <SeleccionAsientosPage />
       </div>
     </div>
   );
