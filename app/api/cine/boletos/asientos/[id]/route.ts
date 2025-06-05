@@ -6,35 +6,19 @@ export async function GET(
   { params }: { params: { id_funcion: string } }
 ) {
   try {
-    const [asientosOcupados]: any = await db.query(
-      `SELECT asiento 
-       FROM boletos 
-       WHERE id_funcion = ? AND estado IN ('reservado', 'vendido')`,
+    const [asientos] = await db.query(
+      `SELECT 
+        b.asiento,
+        b.estado,
+        f.precio_boleto
+       FROM boletos b
+       JOIN funciones f ON b.id_funcion = f.id_funcion
+       WHERE b.id_funcion = ?`,
       [params.id_funcion]
     );
-
-    const [salaInfo]: any = await db.query(
-      `SELECT s.capacidad 
-       FROM salas s
-       JOIN funciones f ON f.id_sala = s.id_sala
-       WHERE f.id_funcion = ?`,
-      [params.id_funcion]
-    );
-
-    const capacidad = salaInfo[0]?.capacidad || 100;
-    const asientosDisponibles = [];
-    const ocupados = asientosOcupados.map((b: any) => b.asiento);
-
-    for (let i = 1; i <= capacidad; i++) {
-      asientosDisponibles.push({
-        asiento: `A-${i}`,
-        disponible: !ocupados.includes(`A-${i}`)
-      });
-    }
-
-    return NextResponse.json(asientosDisponibles);
+    
+    return NextResponse.json(asientos);
   } catch (error) {
-    console.error(error);
     return NextResponse.json(
       { error: "Error al obtener los asientos" },
       { status: 500 }

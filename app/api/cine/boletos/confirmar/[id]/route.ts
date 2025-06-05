@@ -8,7 +8,7 @@ export const POST = verifyAuth(async (req: NextRequest) => {
 
   await db.query(
     `UPDATE boletos 
-     SET estado = 'cancelado' 
+     SET estado = 'vendido' 
      WHERE id_boleto IN (?) AND id_usuario = ? AND estado = 'reservado'`,
     [ids_boletos, user.id]
   );
