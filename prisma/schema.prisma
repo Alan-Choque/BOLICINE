@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../lib/generated/prisma"
+  output   = "../prisma"
 }
 
 datasource db {
@@ -31,7 +31,6 @@ model boletos {
   @@index([id_usuario], map: "fk_boletos_usuario")
 }
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model candy_bar {
   id_producto        Int       @id @default(autoincrement())
   nombre_producto    String    @db.VarChar(100)
@@ -48,24 +47,24 @@ model candy_bar {
 
 model carteleras {
   id_cartelera Int         @id @default(autoincrement())
-  id_cine      Int
   fecha_inicio DateTime    @db.Date
   fecha_fin    DateTime    @db.Date
   descripcion  String?     @db.Text
-  cines        cines       @relation(fields: [id_cine], references: [id_cine], onDelete: Cascade, map: "fk_carteleras_cine")
   funciones    funciones[]
-
-  @@index([id_cine], map: "fk_carteleras_cine")
 }
 
 model cines {
-  id_cine     Int          @id @default(autoincrement())
-  nombre_cine String       @db.VarChar(100)
-  direccion   String?      @db.VarChar(255)
-  telefono    String?      @db.VarChar(50)
-  carteleras  carteleras[]
-  empleados   empleados[]
-  salas       salas[]
+  id_cine       Int         @id @default(autoincrement())
+  nombre_cine   String      @db.VarChar(100)
+  direccion     String?     @db.VarChar(255)
+  telefono      String?     @db.VarChar(50)
+  facebook_url  String?     @db.VarChar(255)
+  instagram_url String?     @db.VarChar(255)
+  tiktok_url    String?     @db.VarChar(255)
+  email         String?     @db.VarChar(100)
+  ubicacion_url String?     @db.VarChar(255)
+  empleados     empleados[]
+  salas         salas[]
 }
 
 model clasificaciones {
@@ -139,6 +138,15 @@ model historial_reproduccion {
   @@index([id_pelicula], map: "fk_historial_pelicula")
 }
 
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model imagenes_extra {
+  id_imagen_extra Int                 @id @default(autoincrement())
+  tipo            imagenes_extra_tipo
+  nombre          String              @db.VarChar(100)
+  url             String              @db.VarChar(255)
+  descripcion     String?             @db.VarChar(255)
+}
+
 model intentos_login {
   id         Int       @id @default(autoincrement())
   id_usuario Int?
@@ -167,6 +175,13 @@ model logs_actividad {
   @@index([id_boleto], map: "id_boleto")
 }
 
+model metodos_pago {
+  id_metodo   Int     @id @default(autoincrement())
+  nombre      String  @db.VarChar(50)
+  descripcion String? @db.VarChar(255)
+  pagos       pagos[]
+}
+
 model notificaciones {
   id_notificacion Int        @id @default(autoincrement())
   id_usuario      Int
@@ -183,14 +198,16 @@ model notificaciones {
 }
 
 model pagos {
-  id_pago     Int           @id @default(autoincrement())
-  id_usuario  Int
-  monto       Decimal       @db.Decimal(10, 2)
-  fecha_pago  DateTime?     @default(now()) @db.DateTime(0)
-  metodo_pago String?       @db.VarChar(50)
-  estado      pagos_estado? @default(pendiente)
-  usuarios    usuarios      @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, map: "fk_pagos_usuario")
+  id_pago      Int           @id @default(autoincrement())
+  id_usuario   Int
+  monto        Decimal       @db.Decimal(10, 2)
+  id_metodo    Int
+  fecha_pago   DateTime?     @default(now()) @db.DateTime(0)
+  estado       pagos_estado? @default(pendiente)
+  metodos_pago metodos_pago  @relation(fields: [id_metodo], references: [id_metodo], map: "fk_pagos_metodo")
+  usuarios     usuarios      @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, map: "fk_pagos_usuario")
 
+  @@index([id_metodo], map: "fk_pagos_metodo")
   @@index([id_usuario], map: "fk_pagos_usuario")
 }
 
@@ -256,13 +273,12 @@ model productoras {
 }
 
 model promociones {
-  id_promocion         Int                    @id @default(autoincrement())
-  titulo               String                 @db.VarChar(100)
-  descripcion          String?                @db.Text
-  fecha_inicio         DateTime?              @db.Date
-  fecha_fin            DateTime?              @db.Date
-  descuento            Decimal?               @db.Decimal(5, 2)
-  usuarios_promociones usuarios_promociones[]
+  id_promocion Int       @id @default(autoincrement())
+  titulo       String    @db.VarChar(100)
+  descripcion  String?   @db.Text
+  fecha_inicio DateTime? @db.Date
+  fecha_fin    DateTime? @db.Date
+  descuento    Decimal?  @db.Decimal(5, 2)
 }
 
 model reparto {
@@ -320,19 +336,9 @@ model suscripciones {
   @@index([id_usuario], map: "fk_suscripciones_usuario")
 }
 
-model usuario_tags {
-  id_usuario Int
-  tag        String   @db.VarChar(100)
-  relevancia Decimal? @default(0.00) @db.Decimal(5, 2)
-  usuarios   usuarios @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, onUpdate: Restrict, map: "usuario_tags_ibfk_1")
-
-  @@id([id_usuario, tag])
-}
-
 model usuarios {
   id_usuario             Int                      @id @default(autoincrement())
   nombre                 String                   @db.VarChar(100)
-  apellido               String                   @db.VarChar(100)
   email                  String                   @unique(map: "email") @db.VarChar(100)
   password               String                   @db.VarChar(255)
   rol                    usuarios_rol?            @default(cliente)
@@ -348,21 +354,7 @@ model usuarios {
   pagos                  pagos[]
   reportes_usuarios      reportes_usuarios[]
   suscripciones          suscripciones[]
-  usuario_tags           usuario_tags[]
-  usuarios_promociones   usuarios_promociones[]
   valoraciones           valoraciones[]
-}
-
-model usuarios_promociones {
-  id_usuario      Int
-  id_promocion    Int
-  fecha_reclamada DateTime?                    @default(now()) @db.DateTime(0)
-  estado          usuarios_promociones_estado? @default(activa)
-  promociones     promociones                  @relation(fields: [id_promocion], references: [id_promocion], onDelete: Cascade, map: "fk_up_promocion")
-  usuarios        usuarios                     @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, map: "fk_up_usuario")
-
-  @@id([id_usuario, id_promocion])
-  @@index([id_promocion], map: "fk_up_promocion")
 }
 
 model valoraciones {
@@ -379,17 +371,17 @@ model valoraciones {
   @@index([id_usuario], map: "fk_valoraciones_usuario")
 }
 
+enum imagenes_extra_tipo {
+  icono
+  banner
+  otro
+}
+
 enum reportes_usuarios_tipo_reporte {
   error
   sugerencia
   contenido
   otro
-}
-
-enum usuarios_promociones_estado {
-  activa
-  utilizada
-  expirada
 }
 
 enum boletos_estado {
@@ -404,6 +396,11 @@ enum suscripciones_estado {
   cancelado
 }
 
+enum usuarios_rol {
+  cliente
+  administrador
+}
+
 enum pagos_estado {
   completado
   pendiente
@@ -414,11 +411,6 @@ enum reportes_usuarios_estado {
   pendiente
   en_revisi_n @map("en revisión")
   resuelto
-}
-
-enum usuarios_rol {
-  cliente
-  administrador
 }
 
 enum peliculas_tipo_contenido {
