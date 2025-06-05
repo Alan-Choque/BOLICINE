@@ -16,9 +16,11 @@ import { Input } from "@/components/ui/input";
 import { formSchema } from "./LoginForm.form";
 import { useState } from "react";
 import { FormError } from "./FormError";
-
+import { login } from "@/actions/login";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 export function LoginForm() {
-
+  const router = useRouter();
   const [error, setError] = useState<string | undefined>("");
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -30,7 +32,17 @@ export function LoginForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      login(values).then((data) => {
+        setError(data?.error);
+        if (data?.success) {
+          toast.success("Login se ha realizado con éxito");
+        }
+      });
+      router.push("/profiles");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
