@@ -236,9 +236,9 @@ export default function Login({ isOpen, onClose }: LoginProps) {
 
               <div className="space-y-3">
                 <button className="flex w-full items-center justify-center rounded-lg bg-blue-600 py-4 text-lg font-medium text-white hover:bg-blue-700 transition-colors">
-                  <Image
+                  <img
                     src="https://www.facebook.com/favicon.ico"
-                    alt="Google"
+                    alt="Facebook Icon"
                     width={20}
                     height={20}
                     className="mr-2 h-5 w-5"
@@ -247,9 +247,9 @@ export default function Login({ isOpen, onClose }: LoginProps) {
                 </button>
 
                 <button className="flex w-full items-center justify-center rounded-lg bg-gray-200 py-4 text-lg font-medium text-black hover:bg-blue-50 transition-colors">
-                  <Image
+                  <img
                     src="https://www.google.com/favicon.ico"
-                    alt="Google"
+                    alt="Google Icon"
                     width={20}
                     height={20}
                     className="mr-2 h-5 w-5"
