@@ -1,0 +1,428 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model actores {
+  id_actor         Int       @id @default(autoincrement())
+  nombre_actor     String    @db.VarChar(100)
+  apellido_actor   String?   @db.VarChar(100)
+  fecha_nacimiento DateTime? @db.Date
+  biografia        String?   @db.Text
+  reparto          reparto[]
+}
+
+model boletos {
+  id_boleto      Int              @id @default(autoincrement())
+  id_funcion     Int
+  id_usuario     Int
+  asiento        String?          @db.VarChar(10)
+  estado         boletos_estado?  @default(reservado)
+  funciones      funciones        @relation(fields: [id_funcion], references: [id_funcion], onDelete: Cascade, map: "fk_boletos_funcion")
+  usuarios       usuarios         @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, map: "fk_boletos_usuario")
+  logs_actividad logs_actividad[]
+
+  @@index([id_funcion], map: "fk_boletos_funcion")
+  @@index([id_usuario], map: "fk_boletos_usuario")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model candy_bar {
+  id_producto        Int       @id @default(autoincrement())
+  nombre_producto    String    @db.VarChar(100)
+  descripcion        String    @db.Text
+  precio             Decimal   @db.Decimal(10, 2)
+  imagen_url         String?   @db.VarChar(255)
+  es_promocion       Boolean   @default(false)
+  precio_promocional Decimal?  @db.Decimal(10, 2)
+  promo_fecha_inicio DateTime? @db.Date
+  promo_fecha_fin    DateTime? @db.Date
+  categoria          String?   @db.VarChar(50)
+  stock              Int?
+}
+
+model carteleras {
+  id_cartelera Int         @id @default(autoincrement())
+  id_cine      Int
+  fecha_inicio DateTime    @db.Date
+  fecha_fin    DateTime    @db.Date
+  descripcion  String?     @db.Text
+  cines        cines       @relation(fields: [id_cine], references: [id_cine], onDelete: Cascade, map: "fk_carteleras_cine")
+  funciones    funciones[]
+
+  @@index([id_cine], map: "fk_carteleras_cine")
+}
+
+model cines {
+  id_cine     Int          @id @default(autoincrement())
+  nombre_cine String       @db.VarChar(100)
+  direccion   String?      @db.VarChar(255)
+  telefono    String?      @db.VarChar(50)
+  carteleras  carteleras[]
+  empleados   empleados[]
+  salas       salas[]
+}
+
+model clasificaciones {
+  id_clasificacion Int         @id @default(autoincrement())
+  codigo           String      @unique(map: "codigo") @db.VarChar(10)
+  descripcion      String?     @db.Text
+  peliculas        peliculas[]
+}
+
+model directores {
+  id_director          Int                    @id @default(autoincrement())
+  nombre_director      String                 @db.VarChar(100)
+  apellido_director    String?                @db.VarChar(100)
+  biografia            String?                @db.Text
+  peliculas_directores peliculas_directores[]
+}
+
+model empleados {
+  id_empleado     Int              @id @default(autoincrement())
+  nombre          String?          @db.VarChar(100)
+  apellido        String?          @db.VarChar(100)
+  ci              String?          @unique(map: "ci") @db.VarChar(20)
+  correo          String?          @db.VarChar(100)
+  telefono        String?          @db.VarChar(20)
+  fecha_contrato  DateTime?        @db.Date
+  id_cine         Int?
+  id_rol          Int?
+  usuario_sistema Boolean?         @default(true)
+  cines           cines?           @relation(fields: [id_cine], references: [id_cine], onDelete: Cascade, map: "fk_empleados_cine")
+  roles_empleados roles_empleados? @relation(fields: [id_rol], references: [id_rol], onDelete: Restrict, map: "fk_empleados_rol")
+  logs_actividad  logs_actividad[]
+  notificaciones  notificaciones[]
+
+  @@index([id_cine], map: "fk_empleados_cine")
+  @@index([id_rol], map: "fk_empleados_rol")
+}
+
+model funciones {
+  id_funcion        Int        @id @default(autoincrement())
+  id_cartelera      Int
+  id_sala           Int
+  id_pelicula       Int
+  fecha_hora_inicio DateTime?  @db.DateTime(0)
+  fecha_hora_fin    DateTime?  @db.DateTime(0)
+  precio_boleto     Decimal?   @db.Decimal(6, 2)
+  boletos           boletos[]
+  carteleras        carteleras @relation(fields: [id_cartelera], references: [id_cartelera], onDelete: Cascade, map: "fk_funciones_cartelera")
+  peliculas         peliculas  @relation(fields: [id_pelicula], references: [id_pelicula], onDelete: Cascade, map: "fk_funciones_pelicula")
+  salas             salas      @relation(fields: [id_sala], references: [id_sala], onDelete: Cascade, map: "fk_funciones_sala")
+
+  @@index([id_cartelera], map: "fk_funciones_cartelera")
+  @@index([id_pelicula], map: "fk_funciones_pelicula")
+  @@index([id_sala], map: "fk_funciones_sala")
+}
+
+model generos {
+  id_genero         Int                 @id @default(autoincrement())
+  nombre_genero     String              @db.VarChar(100)
+  peliculas_generos peliculas_generos[]
+}
+
+model historial_reproduccion {
+  id_usuario                Int
+  id_pelicula               Int
+  fecha_visualizacion       DateTime? @default(now()) @db.DateTime(0)
+  progreso_visto_porcentaje Int?      @default(0) @db.TinyInt
+  peliculas                 peliculas @relation(fields: [id_pelicula], references: [id_pelicula], onDelete: Cascade, map: "fk_historial_pelicula")
+  usuarios                  usuarios  @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, map: "fk_historial_usuario")
+
+  @@id([id_usuario, id_pelicula])
+  @@index([id_pelicula], map: "fk_historial_pelicula")
+}
+
+model intentos_login {
+  id         Int       @id @default(autoincrement())
+  id_usuario Int?
+  exito      Boolean?
+  ip_origen  String?   @db.VarChar(45)
+  fecha      DateTime? @default(now()) @db.DateTime(0)
+  usuarios   usuarios? @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, map: "fk_intentos_usuario")
+
+  @@index([id_usuario], map: "fk_intentos_usuario")
+}
+
+model logs_actividad {
+  id_log      Int        @id @default(autoincrement())
+  id_usuario  Int?
+  accion      String?    @db.VarChar(255)
+  fecha_hora  DateTime?  @default(now()) @db.DateTime(0)
+  detalle     String?    @db.Text
+  id_empleado Int?
+  id_boleto   Int?
+  empleados   empleados? @relation(fields: [id_empleado], references: [id_empleado], map: "fk_logs_empleado")
+  usuarios    usuarios?  @relation(fields: [id_usuario], references: [id_usuario], map: "fk_logs_usuario")
+  boletos     boletos?   @relation(fields: [id_boleto], references: [id_boleto], onUpdate: Restrict, map: "logs_actividad_ibfk_1")
+
+  @@index([id_empleado], map: "fk_logs_empleado")
+  @@index([id_usuario], map: "fk_logs_usuario")
+  @@index([id_boleto], map: "id_boleto")
+}
+
+model notificaciones {
+  id_notificacion Int        @id @default(autoincrement())
+  id_usuario      Int
+  titulo          String     @db.VarChar(100)
+  mensaje         String?    @db.Text
+  fecha_envio     DateTime?  @default(now()) @db.DateTime(0)
+  leido           Boolean?   @default(false)
+  id_empleado     Int?
+  usuarios        usuarios   @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, map: "fk_notif_usuario")
+  empleados       empleados? @relation(fields: [id_empleado], references: [id_empleado], onUpdate: Restrict, map: "notificaciones_ibfk_1")
+
+  @@index([id_usuario], map: "fk_notif_usuario")
+  @@index([id_empleado], map: "id_empleado")
+}
+
+model pagos {
+  id_pago     Int           @id @default(autoincrement())
+  id_usuario  Int
+  monto       Decimal       @db.Decimal(10, 2)
+  fecha_pago  DateTime?     @default(now()) @db.DateTime(0)
+  metodo_pago String?       @db.VarChar(50)
+  estado      pagos_estado? @default(pendiente)
+  usuarios    usuarios      @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, map: "fk_pagos_usuario")
+
+  @@index([id_usuario], map: "fk_pagos_usuario")
+}
+
+model peliculas {
+  id_pelicula            Int                       @id @default(autoincrement())
+  titulo                 String                    @db.VarChar(200)
+  sinopsis               String?                   @db.Text
+  duracion               Int?
+  fecha_lanzamiento      DateTime?                 @db.Date
+  id_productora          Int?
+  tipo_contenido         peliculas_tipo_contenido? @default(ambos)
+  imagen_portada         String?                   @db.VarChar(255)
+  url_video              String?                   @db.VarChar(255)
+  id_clasificacion       Int?
+  calificacion_promedio  Float?                    @default(0) @db.Float
+  funciones              funciones[]
+  historial_reproduccion historial_reproduccion[]
+  clasificaciones        clasificaciones?          @relation(fields: [id_clasificacion], references: [id_clasificacion], onDelete: Restrict, map: "fk_peliculas_clasificacion")
+  productoras            productoras?              @relation(fields: [id_productora], references: [id_productora], map: "fk_peliculas_productora")
+  peliculas_directores   peliculas_directores[]
+  peliculas_generos      peliculas_generos[]
+  reparto                reparto[]
+  valoraciones           valoraciones[]
+
+  @@index([id_clasificacion], map: "fk_peliculas_clasificacion")
+  @@index([id_productora], map: "fk_peliculas_productora")
+}
+
+model peliculas_directores {
+  id_pelicula Int
+  id_director Int
+  directores  directores @relation(fields: [id_director], references: [id_director], onDelete: Cascade, map: "fk_pd_director")
+  peliculas   peliculas  @relation(fields: [id_pelicula], references: [id_pelicula], onDelete: Cascade, map: "fk_pd_pelicula")
+
+  @@id([id_pelicula, id_director])
+  @@index([id_director], map: "fk_pd_director")
+}
+
+model peliculas_generos {
+  id_pelicula Int
+  id_genero   Int
+  generos     generos   @relation(fields: [id_genero], references: [id_genero], onDelete: Cascade, map: "fk_pg_genero")
+  peliculas   peliculas @relation(fields: [id_pelicula], references: [id_pelicula], onDelete: Cascade, map: "fk_pg_pelicula")
+
+  @@id([id_pelicula, id_genero])
+  @@index([id_genero], map: "fk_pg_genero")
+}
+
+model planes {
+  id_plan       Int             @id @default(autoincrement())
+  nombre        String?         @db.VarChar(100)
+  precio        Decimal?        @db.Decimal(6, 2)
+  duracion_dias Int?
+  descripcion   String?         @db.Text
+  suscripciones suscripciones[]
+}
+
+model productoras {
+  id_productora     Int         @id @default(autoincrement())
+  nombre_productora String      @db.VarChar(100)
+  pais_origen       String?     @db.VarChar(50)
+  peliculas         peliculas[]
+}
+
+model promociones {
+  id_promocion         Int                    @id @default(autoincrement())
+  titulo               String                 @db.VarChar(100)
+  descripcion          String?                @db.Text
+  fecha_inicio         DateTime?              @db.Date
+  fecha_fin            DateTime?              @db.Date
+  descuento            Decimal?               @db.Decimal(5, 2)
+  usuarios_promociones usuarios_promociones[]
+}
+
+model reparto {
+  id_reparto  Int       @id @default(autoincrement())
+  id_pelicula Int
+  id_actor    Int
+  rol         String?   @db.VarChar(100)
+  actores     actores   @relation(fields: [id_actor], references: [id_actor], onDelete: Cascade, map: "fk_reparto_actor")
+  peliculas   peliculas @relation(fields: [id_pelicula], references: [id_pelicula], onDelete: Cascade, map: "fk_reparto_pelicula")
+
+  @@index([id_actor], map: "fk_reparto_actor")
+  @@index([id_pelicula], map: "fk_reparto_pelicula")
+}
+
+model reportes_usuarios {
+  id_reporte    Int                            @id @default(autoincrement())
+  id_usuario    Int
+  tipo_reporte  reportes_usuarios_tipo_reporte
+  descripcion   String?                        @db.Text
+  fecha_reporte DateTime?                      @default(now()) @db.DateTime(0)
+  estado        reportes_usuarios_estado?      @default(pendiente)
+  usuarios      usuarios                       @relation(fields: [id_usuario], references: [id_usuario], onUpdate: Restrict, map: "reportes_usuarios_ibfk_1")
+
+  @@index([id_usuario], map: "id_usuario")
+}
+
+model roles_empleados {
+  id_rol     Int         @id @default(autoincrement())
+  nombre_rol String      @db.VarChar(100)
+  empleados  empleados[]
+}
+
+model salas {
+  id_sala     Int         @id @default(autoincrement())
+  id_cine     Int
+  nombre_sala String?     @db.VarChar(100)
+  capacidad   Int?
+  funciones   funciones[]
+  cines       cines       @relation(fields: [id_cine], references: [id_cine], onDelete: Cascade, map: "fk_salas_cine")
+
+  @@index([id_cine], map: "fk_salas_cine")
+}
+
+model suscripciones {
+  id_suscripcion Int                   @id @default(autoincrement())
+  id_usuario     Int
+  fecha_inicio   DateTime?             @db.Date
+  fecha_fin      DateTime?             @db.Date
+  estado         suscripciones_estado? @default(activo)
+  id_plan        Int?
+  planes         planes?               @relation(fields: [id_plan], references: [id_plan], onDelete: Restrict, map: "fk_suscripciones_plan")
+  usuarios       usuarios              @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, map: "fk_suscripciones_usuario")
+
+  @@index([id_plan], map: "fk_suscripciones_plan")
+  @@index([id_usuario], map: "fk_suscripciones_usuario")
+}
+
+model usuario_tags {
+  id_usuario Int
+  tag        String   @db.VarChar(100)
+  relevancia Decimal? @default(0.00) @db.Decimal(5, 2)
+  usuarios   usuarios @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, onUpdate: Restrict, map: "usuario_tags_ibfk_1")
+
+  @@id([id_usuario, tag])
+}
+
+model usuarios {
+  id_usuario             Int                      @id @default(autoincrement())
+  nombre                 String                   @db.VarChar(100)
+  apellido               String                   @db.VarChar(100)
+  email                  String                   @unique(map: "email") @db.VarChar(100)
+  password               String                   @db.VarChar(255)
+  rol                    usuarios_rol?            @default(cliente)
+  fecha_registro         DateTime?                @default(now()) @db.DateTime(0)
+  bloqueado_hasta        DateTime?                @db.DateTime(0)
+  foto_perfil            String?                  @db.VarChar(255)
+  verificado             Boolean?                 @default(false)
+  boletos                boletos[]
+  historial_reproduccion historial_reproduccion[]
+  intentos_login         intentos_login[]
+  logs_actividad         logs_actividad[]
+  notificaciones         notificaciones[]
+  pagos                  pagos[]
+  reportes_usuarios      reportes_usuarios[]
+  suscripciones          suscripciones[]
+  usuario_tags           usuario_tags[]
+  usuarios_promociones   usuarios_promociones[]
+  valoraciones           valoraciones[]
+}
+
+model usuarios_promociones {
+  id_usuario      Int
+  id_promocion    Int
+  fecha_reclamada DateTime?                    @default(now()) @db.DateTime(0)
+  estado          usuarios_promociones_estado? @default(activa)
+  promociones     promociones                  @relation(fields: [id_promocion], references: [id_promocion], onDelete: Cascade, map: "fk_up_promocion")
+  usuarios        usuarios                     @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, map: "fk_up_usuario")
+
+  @@id([id_usuario, id_promocion])
+  @@index([id_promocion], map: "fk_up_promocion")
+}
+
+model valoraciones {
+  id_valoracion    Int       @id @default(autoincrement())
+  id_usuario       Int
+  id_pelicula      Int
+  puntaje          Int?
+  comentario       String?   @db.Text
+  fecha_valoracion DateTime? @default(now()) @db.DateTime(0)
+  peliculas        peliculas @relation(fields: [id_pelicula], references: [id_pelicula], onDelete: Cascade, map: "fk_valoraciones_pelicula")
+  usuarios         usuarios  @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, map: "fk_valoraciones_usuario")
+
+  @@index([id_pelicula], map: "fk_valoraciones_pelicula")
+  @@index([id_usuario], map: "fk_valoraciones_usuario")
+}
+
+enum reportes_usuarios_tipo_reporte {
+  error
+  sugerencia
+  contenido
+  otro
+}
+
+enum usuarios_promociones_estado {
+  activa
+  utilizada
+  expirada
+}
+
+enum boletos_estado {
+  vendido
+  reservado
+  cancelado
+}
+
+enum suscripciones_estado {
+  activo
+  inactivo
+  cancelado
+}
+
+enum pagos_estado {
+  completado
+  pendiente
+  fallido
+}
+
+enum reportes_usuarios_estado {
+  pendiente
+  en_revisi_n @map("en revisión")
+  resuelto
+}
+
+enum usuarios_rol {
+  cliente
+  administrador
+}
+
+enum peliculas_tipo_contenido {
+  cine
+  streaming
+  ambos
+}
