@@ -19,8 +19,26 @@ import { FormError } from "./FormError";
 import { login } from "@/actions/login";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 export function LoginForm() {
   const router = useRouter();
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch("/api/check-auth");
+        const data = await res.json();
+
+        if (data.loggedIn) {
+          router.push("/profiles");
+        }
+      } catch (err) {
+        console.error("Error al verificar login", err);
+        router.push("/login");
+      }
+    };
+
+  checkAuth();
+}, []);
   const [error, setError] = useState<string | undefined>("");
 
   const form = useForm<z.infer<typeof formSchema>>({
