@@ -10,7 +10,7 @@ interface AddsProps {
 const AddsCard = ({title, imageUrl, description, price, href}: AddsProps) => {
   return (
     <Link href={href} className="block">
-      <div className="w-3xl h-48 bg-gray-500 text-white flex items-center justify-center rounded-lg shadow-lg">
+      <div className="w-3xl h-48 bg-gray-500 text-white flex items-center justify-center shadow-lg">
         {imageUrl && <img src={imageUrl} alt={title} className="w-full h-48 object-cover rounded-t-lg" />}
       </div>
     </Link>

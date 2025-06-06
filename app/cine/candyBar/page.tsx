@@ -8,7 +8,7 @@ export default function CandyPage() {
       </div>
       <div className="mx-5">
         <h1 className="text-2xl font-bold text-black">
-          Productos recomandados
+          Productos recomendados
         </h1>
         <CarruselCandy />
       </div>

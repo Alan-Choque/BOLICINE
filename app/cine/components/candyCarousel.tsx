@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import CandyCard from "./candyCard";
+import { Carousel, CarouselContent } from "@/components/ui/carousel";
 const candys = [
   {
     id: 3,
@@ -24,18 +26,21 @@ const candys = [
 const CarruselCandy = () => {
   return (
     <div className="py-4">
-      <h1 className="text-2xl font-bold px-4">Productos Recomendados</h1>
-      <div className="flex overflow-x-auto space-x-4">
-        {candys.map((candys) => (
-          <CandyCard
-            key={candys.id}
-            title={candys.title}
-            description={candys.description}
-            imageUrl={candys.imageUrl}
-            href={`/cine/candys/${candys.id}`}
-          ></CandyCard>
-        ))}
-      </div>
+      <Carousel>
+        <CarouselContent>
+          <div className="flex space-x-4">
+            {candys.map((candys) => (
+              <CandyCard
+                key={candys.id}
+                title={candys.title}
+                description={candys.description}
+                imageUrl={candys.imageUrl}
+                href={`/cine/candys/${candys.id}`}
+              ></CandyCard>
+            ))}
+          </div>
+        </CarouselContent>
+      </Carousel>
     </div>
   );
 };

@@ -28,7 +28,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Navbar */}
       <nav className="bg-gray-900  text-white shadow">
         <div className="mx-auto max-w-7xl px-2 sm:px-10 lg:px-10">
           <div className="flex h-16 items-center justify-between">

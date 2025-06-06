@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
 import MovieCard from "./movieCard";
+import { Carousel, CarouselContent } from "@/components/ui/carousel";
 
 const movies = [
   {
@@ -23,19 +25,24 @@ const movies = [
 ];
 const CarruselPeliculas = () => {
   return (
-    <div className="py-4">
-      <div className="flex overflow-x-auto space-x-4">
-        {movies.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            title={movie.title}
-            description={movie.description}
-            imageUrl={movie.imageUrl}
-            href={`/cine/movies/${movie.id}`}
-          ></MovieCard>
-        ))}
-      </div>
-    </div>
+    <>
+      <Carousel>
+        <CarouselContent>
+          <div className="flex space-x-4">
+            {movies.map((movie) => (
+              <MovieCard
+                key={movie.id}
+                title={movie.title}
+                description={movie.description}
+                imageUrl={movie.imageUrl}
+                href={`/cine/movies/${movie.id}`}
+              ></MovieCard>
+            ))}
+          </div>
+        </CarouselContent>
+      </Carousel>
+      
+    </>
   );
 };
 
