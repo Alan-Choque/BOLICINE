@@ -4,7 +4,7 @@ import CarruselPeliculas from "./cine/components/movieCarousel";
 
 export default function Home() {
   return (
-    <div className="text-black">
+    <div className="text-black py-15">
       <div>
         <RatedCard />
         <div className="justify-center m-5 bg-red-500 rounded-2xl px-5">

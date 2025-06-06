@@ -2,9 +2,9 @@
 "use client";
 
 import { useState } from "react";
-import { UserCircleIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, UserCircleIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import Login from "./login"; // Importa el componente Modal
+import Login from "./login";
 import Link from "next/link";
 
 const navigation = [
@@ -76,12 +76,10 @@ export default function Navbar() {
                 <UserCircleIcon aria-hidden="true" className="h-6 w-6" />
               </button>
             </div>
-            <button
+            <Bars3Icon
               onClick={() => setMenuOpen(!menuOpen)}
-              className="focus:outline-none md:hidden"
-            >
-              ☰
-            </button>
+              className="focus:outline-none md:hidden h-6 w-6 hover:bg-gray-800"
+            />
           </div>
         </div>
 
@@ -89,7 +87,7 @@ export default function Navbar() {
         <Login isOpen={isLoginOpen} onClose={toggleLogin} />
 
         {menuOpen && (
-          <div className="md:hidden px-2 pb-3 space-y-1 flex flex-col items-end bg-gray-900 text-white">
+          <div className="md:hidden px-2 pb-3 space-y-1 flex flex-col items-end bg-gray-900 text-white animate-accordion-down">
             {navigation.map((item) => (
               <Link
                 key={item.name}
@@ -109,7 +107,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={toggleLogin}
-              className="relativ py-2 px-3 text-white hover:text-red-500 font-black text-2xl cursor-pointer"
+              className="relative py-2 px-3 text-white hover:text-red-500 font-black text-2xl cursor-pointer"
             >
               Iniciar Sesión
             </button>
