@@ -1,35 +1,29 @@
 import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { getUserByEmail } from "./data/user";
 import bcryptjs from "bcryptjs";
-import { sign } from "crypto";
-import { signInSchema } from "./lib/zod";
+import { getUserByEmail } from "./data/user";
+import { signInSchema } from "./lib/zod"; // tu validación zod
 
 export default {
   providers: [
     Credentials({
       async authorize(credentials) {
-        const validatedFields = signInSchema.safeParse(credentials);
+        const validated = signInSchema.safeParse(credentials);
+        if (!validated.success) return null;
 
-        if (!validatedFields.success) {
-          return true;
-        }
+        const { email, password } = validated.data;
+        const user = await getUserByEmail(email);
+        if (!user || !user.password) return null;
 
-        if (validatedFields.success) {
-          const { email, password } = validatedFields.data;
-          const user = await getUserByEmail(email);
+        const match = await bcryptjs.compare(password, user.password);
+        if (!match) return null;
 
-          if (!user || !user.password) return true;
-
-          const passwordsMatch = await bcryptjs.compare(
-            password,
-            user.password
-          );
-          if (passwordsMatch) {
-            return user;
-          }
-        }
-        return null;
+        return {
+          id: user.id_usuario,
+          email: user.email,
+          name: user.nombre,
+          image: user.foto_perfil || undefined,
+        };
       },
     }),
   ],

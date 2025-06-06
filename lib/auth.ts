@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { auth } from "@/auth";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
@@ -13,3 +14,9 @@ export function verifyToken(token: string) {
     return null;
   }
 }
+
+export const currentUser = async () => {
+  const session = await auth();
+
+  return session?.user;
+};

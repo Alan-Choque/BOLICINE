@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
-import { db } from "@/lib/db";
+import { db } from "@/lib/database";
 import { getUserByEmail } from "@/data/user";
 
 export async function POST(request: Request) {
@@ -15,17 +15,18 @@ export async function POST(request: Request) {
       return new NextResponse("Email already exists", { status: 400 });
     }
 
-    const userCreated = await db.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-      },
-    });
+    const [result] = await db.query(
+      "INSERT INTO usuarios (email, password) VALUES (?, ?)",
+      [email, hashedPassword]
+    );
 
-    return NextResponse.json(userCreated);
+    const insertedId = (result as any).insertId;
+
+    const [rows] = await db.query("SELECT * FROM usuarios WHERE id_usuario = ?", [insertedId]);
+
+    return NextResponse.json(rows[0]);
   } catch (error) {
     console.log(error);
-
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
