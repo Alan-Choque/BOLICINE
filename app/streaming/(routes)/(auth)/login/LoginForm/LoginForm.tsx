@@ -29,16 +29,16 @@ export function LoginForm() {
         const data = await res.json();
 
         if (data.loggedIn) {
-          router.push("/profiles");
+          router.push("/streaming/profiles");
         }
       } catch (err) {
         console.error("Error al verificar login", err);
-        router.push("/login");
+        router.push("/streaming/login");
       }
     };
 
   checkAuth();
-}, []);
+  }, []);
   const [error, setError] = useState<string | undefined>("");
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -52,12 +52,12 @@ export function LoginForm() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       login(values).then((data) => {
-        setError(data?.error);
-        if (data?.success) {
-          toast.success("Login se ha realizado con éxito");
-        }
-      });
-      router.push("/profiles");
+          setError(data?.error);
+          if (data?.success) {
+            toast.success("Login se ha realizado con éxito");
+            router.push("/profiles");
+          }
+        });
     } catch (error) {
       console.log(error);
     }

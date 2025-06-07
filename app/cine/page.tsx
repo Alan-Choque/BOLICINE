@@ -1,5 +1,5 @@
-import Image from "next/image";
-import Navbar from "./components/navbar";
+// import Image from "next/image";
+// import Navbar from "./components/navbar";
 import RatedCard from "./components/ratedCard";
 import CarruselAdds from "./components/addsCarousel";
 import CarruselPeliculas from "./components/movieCarousel";
@@ -8,7 +8,6 @@ import Footer from "./components/footer";
 export default function Home() {
   return (
     <div>
-      <Navbar />
       <div>
         <RatedCard />
         <div className="py-6">
