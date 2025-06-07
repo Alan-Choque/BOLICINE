@@ -1,12 +1,12 @@
 import React from "react";
-import SeleccionAsientosPage from "../../components/scenary";
+import SeleccionAsientosPage from "@/app/cine/components/scenary";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import Details from "../../components/details";
+import Details from "@/app/cine/components/details";
 import { Button } from "@/components/ui/button";
 
 const moviePage = ({ params }: { params: { id: string } }) => {

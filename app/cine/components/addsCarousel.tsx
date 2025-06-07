@@ -26,7 +26,7 @@ const adds = [
 
 const CarruselAdds = () => {
   return (
-    <div className="py-4">
+    <>
       <Carousel plugins={[Autoplay({delay: 4000})]}>
         <CarouselContent>
           {adds.map((adds) => (
@@ -40,7 +40,7 @@ const CarruselAdds = () => {
           ))}
         </CarouselContent>
       </Carousel>
-    </div>
+    </>
   );
 };
 
