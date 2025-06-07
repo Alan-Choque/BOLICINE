@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { Bars3Icon, UserCircleIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import Login from "./login";
+import Login from "../(auth)/login";
 import Link from "next/link";
 import { itemsNavbar } from "@/data/itemsNavbar";
 
