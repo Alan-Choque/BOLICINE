@@ -6,7 +6,7 @@ export default function CandyPage() {
       <h1 className="text-2xl font-bold text black">Candy Bar</h1>
       <CandyAnuncio />
       <CarruselCandy />
-      
+       
 
     </div>
   );

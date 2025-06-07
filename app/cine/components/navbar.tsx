@@ -2,17 +2,17 @@
 "use client";
 
 import { useState } from "react";
-//import { UserCircleIcon } from '@heroicons/react/24/outline';
+import { UserCircleIcon } from '@heroicons/react/24/outline';
 import Image from "next/image";
 import Login from "./login"; // Importa el componente Modal
 import Link from "next/link";
 
 const navigation = [
-  { name: "Inicio", href: "/cine", current: false },
+  { name: "Inicio", href: "/", current: false },
   { name: "Cartelera", href: "/cine/cartelera", current: false },
   { name: "Candy Bar", href: "/cine/candyBar", current: false },
   { name: "Mis compras", href: "/cine/compras", current: false },
-  { name: "Cinebol +", href: "/cine/streaming", current: false },
+  { name: "Cinebol +", href: "/streaming", current: false },
 ];
 
 function classNames(...classes: string[]) {
@@ -40,7 +40,7 @@ export default function Navbar() {
                 width={40}
                 height={40}
               />
-              <span className="ml-2 text-lg font-extrabold text-red-500">
+              <span className="ml-2 text-lg font-extrabold text-white">
                 CINEBOL
               </span>
             </div>
@@ -73,7 +73,7 @@ export default function Navbar() {
                 className="relative rounded-full bg-white p-1 text-red-500 hover:text-gray-300 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
               >
                 <span className="sr-only">Open user menu</span>
-                <button aria-hidden="true" className="h-6 w-6" />
+                <UserCircleIcon aria-hidden="true" className="h-6 w-6" />
               </button>
             </div>
           </div>
