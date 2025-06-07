@@ -5,124 +5,107 @@ import NavBar from './NavBar';
 import styles from './MetodoDePago.module.css';
 
 const MetodoDePago: React.FC = () => {
-  // Estado para la opción seleccionada: 'none' | 'visa' | 'qr'
   const [opcion, setOpcion] = useState<'none' | 'visa' | 'qr'>('none');
-  // Estado para saber si se aceptaron términos
   const [aceptaTerminos, setAceptaTerminos] = useState(false);
 
   return (
-    <>
-      {/* Barra de navegación */}
+    <div className={styles.container}>
       <NavBar />
+      <h2 className={styles.title}>MEDIO DE PAGO</h2>
 
-      {/* Formulario */}
-      <div className={styles.container}>
-        {/* 1. Título */}
-        <h2 className={styles.title}>MEDIO DE PAGO</h2>
-
-        {/* 2. Botones de opción */}
-        <div className={styles.opciones}>
-          {/* Tarjeta de pago */}
-          <button
-            type="button"
-            className={
-              opcion === 'visa'
-                ? styles.botonOpcionActivo
-                : styles.botonOpcionInactivo
-            }
-            onClick={() => setOpcion('visa')}
-          >
-            <img
-              src="/images/vector.png"
-              alt="Visa"
-              className={styles.icono}
-            />
-            <span>Tarjeta de pago</span>
-          </button>
-
-          {/* QR */}
-          <button
-            type="button"
-            className={
-              opcion === 'qr'
-                ? styles.botonOpcionActivo
-                : styles.botonOpcionInactivo
-            }
-            onClick={() => setOpcion('qr')}
-          >
-            <img src="/images/qr.png" alt="QR" className={styles.icono} />
-            <span>QR</span>
-          </button>
-        </div>
-
-        {/* 3. Campo bloqueado para Visa */}
-        {opcion === 'visa' && (
-          <div className={styles.campoTarjetaBloqueada}>
-            <img
-              src="/images/vector.png"
-              alt="Visa"
-              className={styles.iconoPequeño}
-            />
-            <input
-              className={styles.inputBloqueado}
-              type="text"
-              placeholder="VISA 4716 .... 5615"
-              disabled
-            />
-          </div>
-        )}
-
-        {/* 4. Checkbox de Términos */}
-        <label className={styles.labelCheckbox}>
-          <input
-            type="checkbox"
-            checked={aceptaTerminos}
-            onChange={(e) => setAceptaTerminos(e.currentTarget.checked)}
-          />
-          <span className={styles.casilla} />
-          <span className={styles.textoCheckbox}>
-            Acepto los Términos y Condiciones y el Aviso de Privacidad
-          </span>
-        </label>
-
-        {/* 5. Nombre y Apellido */}
-        <div className={styles.formField}>
-          <label className={styles.labelField}>Nombre y Apellido</label>
-          <input
-            className={styles.inputField}
-            type="text"
-            placeholder="Nombre y Apellido"
-          />
-        </div>
-
-        {/* 6. Email */}
-        <div className={styles.formField}>
-          <label className={styles.labelField}>
-            Ingresa tu email para la confirmación de la compra
-          </label>
-          <input
-            className={styles.inputField}
-            type="email"
-            placeholder="ej: ejemplo@ejemplo.com"
-          />
-        </div>
-
-        {/* 7. Advertencia */}
-        <p className={styles.advertencia}>
-          LOS BOLETOS SON VÁLIDOS ÚNICAMENTE PARA EL DÍA Y HORARIO SELECCIONADO. NO
-          SE REALIZAN REEMBOLSOS NI CAMBIOS DE HORARIOS UNA VEZ REALIZADA LA COMPRA.
-        </p>
-
-        {/* 8. Botón RESERVAR */}
+      {/*Botones de opción */}
+      <div className={styles.opciones}>
         <button
           type="button"
-          className={styles.botonReservar}
-          disabled={!aceptaTerminos}
+          className={
+            opcion === 'visa'
+              ? styles.botonOpcionActivo
+              : styles.botonOpcionInactivo
+          }
+          onClick={() => setOpcion('visa')}
         >
-          RESERVAR
+          <img
+            src="/images/visa.png"
+            alt="Visa"
+            className={styles.iconoPequeño}
+          />
+          <span>Tarjeta de pago</span>
+        </button>
+
+        <button
+          type="button"
+          className={
+            opcion === 'qr'
+              ? styles.botonOpcionActivo
+              : styles.botonOpcionInactivo
+          }
+          onClick={() => setOpcion('qr')}
+        >
+          <img src="/images/qr.png" alt="QR" className={styles.icono} />
+          <span>QR</span>
         </button>
       </div>
-    </>
+
+      {opcion === 'visa' && (
+        <div className={styles.campoTarjetaBloqueada}>
+          <img
+            src="/images/visa.png"
+            alt="Visa"
+            className={styles.iconoPequeño}
+          />
+          <input
+            className={styles.inputBloqueado}
+            type="text"
+            placeholder="VISA 4716 .... .... 5615"
+            disabled
+          />
+        </div>
+      )}
+
+      <label className={styles.labelCheckbox}>
+        <input
+          type="checkbox"
+          checked={aceptaTerminos}
+          onChange={(e) => setAceptaTerminos(e.currentTarget.checked)}
+        />
+        <span className={styles.casilla} />
+        <span className={styles.textoCheckbox}>
+          Acepto los <a href="#">Términos y Condiciones</a> y el <a href="#">Aviso de Privacidad</a>
+        </span>
+      </label>
+
+      <div className={styles.formField}>
+        <label className={styles.labelField}>Nombre y Apellido</label>
+        <input
+          className={styles.inputField}
+          type="text"
+          placeholder="Nombre y Apellido"
+        />
+      </div>
+
+      <div className={styles.formField}>
+        <label className={styles.labelField}>
+          Ingresa tu email para la confirmacion de la compra
+        </label>
+        <input
+          className={styles.inputField}
+          type="email"
+          placeholder="ej: ejemplo@ejemplo.com"
+        />
+      </div>
+
+      <p className={styles.advertencia}>
+        Los boletos son validos unicamente para el dia y horario seleccionado. No se realizan reembolsos ni cambios de horario una vez realizada la compra.
+      </p>
+
+      <button
+        type="button"
+        className={styles.botonReservar}
+        disabled={!aceptaTerminos}
+      >
+        RESERVAR
+      </button>
+    </div>
   );
 };
 

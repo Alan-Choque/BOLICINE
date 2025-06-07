@@ -1,17 +1,22 @@
 .nav {
   display: flex;
-  align-items: center;
+  width: 440px;
+  height: 115px;
+  align-items: flex-end;
   justify-content: space-between;
   padding: 16px;
-  background-color: white;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  background-color: #000;
+  margin: 0 -41.5px;
 }
 .icon {
-  width: 24px;
+  width: 33px;
+  height: 28px;
   height: auto;
   cursor: pointer;
+  filter: brightness(0) invert(1); 
 }
 .logo {
-  height: 32px;
+  width: 109.11px;
+  height: 41.13px;
   object-fit: contain;
 }
