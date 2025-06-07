@@ -1,5 +1,5 @@
-import CandyAnuncio from "../components/CandyAnuncios";
-import CarruselCandy from "../components/candyCarousel";
+import CandyAnuncio from "../../components/CandyAnuncios";
+import CarruselCandy from "../../components/candyCarousel";
 export default function CandyPage() {
   return (
     <div className="py-15">
