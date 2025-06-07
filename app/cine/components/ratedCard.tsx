@@ -14,9 +14,9 @@ const RatedCard = () => {
       <img
         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkLQDApSHnbeOpFQvWxaY47k0rI3DLr1F4Fg&s"
         alt="Movie Poster"
-        className="w-full h-120 object-cover brightness-40"
+        className="w-full h-140 object-cover brightness-35"
       />
-      <div className="absolute flex justify-center items-center w-xl h-4/6 gap-8">
+      <div className="p-10 space-x-5 h-2/3 absolute block sm:flex items-center align-middle justify-items-center sm:justify-start w-full">
         <MovieCard
           key={movie.id}
           title={movie.title}

@@ -7,14 +7,14 @@ export default function Home() {
     <div className="text-black py-15">
       <div>
         <RatedCard />
-        <div className="justify-center m-5 bg-red-500 rounded-2xl px-5">
+        <div className="justify-center m-5">
           <CarruselAdds />
         </div>
         <div className="py-6 mx-5">
           <h1 className="text-2xl font-bold mb-4">Estrenos</h1>
           <CarruselPeliculas />
         </div>
-        <div className="justify-center m-5 bg-red-500 rounded-2xl px-5">
+        <div className="justify-center m-5">
           <CarruselAdds />
         </div>
         <div className="py-6 mx-5">

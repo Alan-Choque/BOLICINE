@@ -6,6 +6,7 @@ import { Bars3Icon, UserCircleIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Login from "./login";
 import Link from "next/link";
+import { itemsNavbar } from "@/data/itemsNavbar";
 
 const navigation = [
   { name: "Inicio", href: "/", current: false },
@@ -33,17 +34,14 @@ export default function Navbar() {
         <div className="mx-auto justify-between max-w-7xl px-2 sm:px-10 lg:px-10 flex-row">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
-            <div className="flex shrink-0 items-center">
+            <Link href="/" className="flex shrink-0 items-center">
               <Image
-                src="/logoNegativo.png"
+                src="/images/logo cinebol.png"
                 alt="CINEBOL"
-                width={40}
-                height={40}
+                width={100}
+                height={100}
               />
-              <span className="ml-2 text-lg font-extrabold text-white">
-                CINEBOL
-              </span>
-            </div>
+            </Link>
 
             {/* Enlaces de navegación */}
             <div className="hidden space-x-4 md:flex">
