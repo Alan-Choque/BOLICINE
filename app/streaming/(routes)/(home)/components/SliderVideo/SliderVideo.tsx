@@ -18,7 +18,7 @@ export default function SliderVideo() {
                             <Play className="h-6 w-6 mr-2 fill-black" />
                             Reproducir
                         </Button>
-                        <Button size="lg" className="bg-gray-500/50 hover:bg-gray-500/50">
+                        <Button size="lg" className="bg-gray-500/50 hover:bg-gray-500/40">
                             <Info className="h-6 w-6 mr-2"/>
                             Mas informacion
                         </Button>
