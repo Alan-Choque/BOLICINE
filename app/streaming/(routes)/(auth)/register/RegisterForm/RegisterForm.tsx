@@ -22,6 +22,7 @@ export function RegisterForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      nombre: "",
       email: "",
       password: "",
       repeatPassword: "",
@@ -30,10 +31,10 @@ export function RegisterForm() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post("/api/auth/register", values)
+      await axios.post("/api/auth/register", values);
 
       toast.success("El usuario se ha registrado correctamente")
-      router.push("/profiles")
+      router.push("/streaming/profiles")
     } catch (error) {
       console.log(error);
       toast("Ha ocurrido un error", {
@@ -50,6 +51,22 @@ export function RegisterForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="nombre"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input
+                  placeholder="Nombre"
+                  {...field}
+                  className="h-14"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="email"

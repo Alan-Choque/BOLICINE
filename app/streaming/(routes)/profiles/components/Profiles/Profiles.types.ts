@@ -1,9 +1,9 @@
-export type UsuarioPerfil = {
-    id_usuario: string;
-    nombre: string;
-    foto_perfil: string;
+export interface Perfil {
+    id: number;
+    profileName: string; // Corresponde a nombre_perfil
+    avatarUrl: string | null;
 };
 
 export type ProfilesProps = {
-    users: UsuarioPerfil[];
+    users: Perfil[];
 };

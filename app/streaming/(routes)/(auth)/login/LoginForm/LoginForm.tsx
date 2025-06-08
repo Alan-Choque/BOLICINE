@@ -19,26 +19,27 @@ import { FormError } from "./FormError";
 import { login } from "@/actions/login";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 export function LoginForm() {
   const router = useRouter();
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await fetch("/api/check-auth");
-        const data = await res.json();
+  
+  // useEffect(() => {
+  //   const checkAuth = async () => {
+  //     try {
+  //       const res = await fetch("/api/check-auth");
+  //       const data = await res.json();
 
-        if (data.loggedIn) {
-          router.push("/streaming/profiles");
-        }
-      } catch (err) {
-        console.error("Error al verificar login", err);
-        router.push("/streaming/login");
-      }
-    };
+  //       if (data.loggedIn) {
+  //         router.push("/streaming/profiles");
+  //       }
+  //     } catch (err) {
+  //       console.error("Error al verificar login", err);
+  //       router.push("/streaming/profiles");
+  //     }
+  //   };
 
-  checkAuth();
-  }, []);
+  // checkAuth();
+  // }, []);
   const [error, setError] = useState<string | undefined>("");
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -50,16 +51,28 @@ export function LoginForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // Limpia cualquier error anterior
+    setError(undefined); 
+
     try {
-      login(values).then((data) => {
-          setError(data?.error);
-          if (data?.success) {
-            toast.success("Login se ha realizado con éxito");
-            router.push("/profiles");
-          }
-        });
-    } catch (error) {
-      console.log(error);
+      // ✅ Usa await para esperar el resultado de la Server Action
+      const result = await login(values); 
+
+      if (result?.error) {
+        // ✅ Si la Server Action devuelve un error, establécelo
+        setError(result.error);
+        toast.error(result.error); // Puedes mostrar el error con toast también
+      } else {
+        // ✅ Si no hay error, significa que el login fue exitoso.
+        //    Ahora puedes redirigir.
+        toast.success("¡Inicio de sesión exitoso!"); 
+        router.push("/streaming/profiles"); 
+      }
+    } catch (err) {
+      // Esto captura errores inesperados (ej. problemas de red antes de llegar a la Server Action)
+      console.error("Error inesperado en onSubmit:", err);
+      setError("Ocurrió un error inesperado. Inténtalo de nuevo.");
+      toast.error("Error al iniciar sesión.");
     }
   };
 

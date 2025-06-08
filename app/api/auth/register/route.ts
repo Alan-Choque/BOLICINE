@@ -1,32 +1,46 @@
-import bcrypt from "bcryptjs";
-import { NextResponse } from "next/server";
-
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/database";
-import { getUserByEmail } from "@/data/user";
+import bcrypt from "bcryptjs";
 
-export async function POST(request: Request) {
-  const { email, password } = await request.json();
-
+export async function POST(req: NextRequest) {
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const existingUser = await getUserByEmail(email);
+    const { nombre, email, password } = await req.json();
 
-    if (existingUser) {
-      return new NextResponse("Email already exists", { status: 400 });
+    if (!nombre || !email || !password) {
+      return NextResponse.json(
+        { error: "Todos los campos son requeridos" },
+        { status: 400 }
+      );
     }
 
-    const [result] = await db.query(
-      "INSERT INTO usuarios (email, password) VALUES (?, ?)",
-      [email, hashedPassword]
+    const [rows] = await db.query(
+      "SELECT id_usuario FROM usuarios WHERE email = ?",
+      [email]
     );
 
-    const insertedId = (result as any).insertId;
+    if ((rows as any[]).length > 0) {
+      return NextResponse.json(
+        { error: "El correo ya está registrado" },
+        { status: 400 }
+      );
+    }
 
-    const [rows] = await db.query("SELECT * FROM usuarios WHERE id_usuario = ?", [insertedId]);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await db.query(
+      "INSERT INTO usuarios (nombre, email, password, verificado) VALUES (?, ?, ?, 1)",
+      [nombre, email, hashedPassword]
+    );
 
-    return NextResponse.json(rows[0]);
+    return NextResponse.json({
+      success: true,
+      message: "Usuario registrado exitosamente",
+    });
+
   } catch (error) {
-    console.log(error);
-    return new NextResponse("Internal Error", { status: 500 });
+    console.error("Error en registro:", error);
+    return NextResponse.json(
+      { error: "Error al registrar usuario" },
+      { status: 500 }
+    );
   }
 }

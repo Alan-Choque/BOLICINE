@@ -23,48 +23,51 @@ import {
 import { ProfilesProps } from "./Profiles.types";
 import { AddProfile } from "./AddProfile/AddProfile";
 import { useCurrentNetflixUser } from "@/hooks/use-current-user";
-import { UsuarioPerfil } from "./Profiles.types";
+import { Perfil } from "./Profiles.types";
 
 export function Profiles(props: ProfilesProps) {
-    const { users } = props;
-    const { changeCurrentUser } = useCurrentNetflixUser();
+  const { users } = props; // `users` es ahora `Perfil[]`
+  const { changeCurrentUser } = useCurrentNetflixUser();
 
-    const [manageProfiles, setManageProfiles] = useState(false);
-    const router = useRouter();
+  const [manageProfiles, setManageProfiles] = useState(false);
+  const router = useRouter();
 
-    const onClickUser = (user: UsuarioPerfil) => {
-        changeCurrentUser(user); // esto depende de cómo tengas el contexto de usuario
-        router.push("/");
-    };
+  // Asegúrate de que `user` sea del tipo `Perfil`
+  const onClickUser = (user: Perfil) => { 
+    changeCurrentUser(user); // Asegúrate de que `changeCurrentUser` espere el tipo `Perfil`
+    router.push("/");
+  };
 
-    const deleteUser = async (userId: string) => {
-        try {
-            await axios.request({
-            url: "/api/usuario",
-            method: "DELETE",
-            data: { id_usuario: userId },
-            });
-
-            setManageProfiles(false);
-            router.refresh();
-        } catch (error) {
-            console.error(error);
-            toast.error("Ops! Ha ocurrido un error");
-        }
-    };
+  const deleteProfile = async (profileIdToDelete: number) => { // Es el ID del perfil a eliminar (id_perfil)
+    try {
+      // ✅ Llama a la nueva ruta /api/usuarios
+      await axios.request({
+        method: 'DELETE', // Especifica el método DELETE
+        url: '/api/usuarios', // La URL de tu API Route
+        data: { profileId: profileIdToDelete } // Aquí la propiedad 'data' es perfectamente válida
+      });
+      toast.success("Perfil eliminado correctamente."); 
+      setManageProfiles(false);
+      router.refresh(); // Refresca la página para mostrar los perfiles actualizados
+    } catch (error: any) { 
+      console.error("Error al eliminar perfil:", error);
+      const errorMessage = error.response?.data?.message || "Ops! Ha ocurrido un error al eliminar el perfil.";
+      toast.error(errorMessage);
+    }
+  };
 
     return (
         <div>
         <div className="flex gap-7">
             {users.map((user) => (
             <div
-                key={user.id_usuario}
+                key={user.id}
                 className="text-center relative cursor-pointer"
                 onClick={() => onClickUser(user)}
             >
                 <Image
-                src={user.foto_perfil || ""}
-                alt={`Profile Image ${user.nombre}`}
+                src={user.avatarUrl || ""}
+                alt={`Profile Image ${user.profileName}`}
                 width={140}
                 height={140}
                 className={cn(
@@ -73,7 +76,7 @@ export function Profiles(props: ProfilesProps) {
                 )}
                 />
                 <p className="mt-2 text-gray-500 uppercase text-lg">
-                {user.nombre}
+                {user.profileName}
                 </p>
 
                 <div
@@ -81,6 +84,11 @@ export function Profiles(props: ProfilesProps) {
                     "top-14 cursor-pointer w-full flex gap-4 items-center justify-center z-20",
                     manageProfiles ? "absolute" : "hidden"
                 )}
+                onClick={(e) => {
+                    if(manageProfiles) {
+                        e.stopPropagation();
+                    }
+                }}
                 >
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
@@ -98,7 +106,7 @@ export function Profiles(props: ProfilesProps) {
                         <AlertDialogCancel>Volver</AlertDialogCancel>
                         <AlertDialogAction
                         className="text-red-500 border-red-500 border"
-                        onClick={() => deleteUser(user.id_usuario)}
+                        onClick={() => deleteProfile(user.id)}
                         >
                         Eliminar
                         </AlertDialogAction>

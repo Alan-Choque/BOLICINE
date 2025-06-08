@@ -42,15 +42,14 @@ export function FormAddProfile(props: FormAddProfileProps) {
     try {
         setIsLoading(true);
 
-        const response = await axios.post("/api/usuario", {
-        nombre: values.profileName,
-        foto_perfil: values.avatarUrl,
-        });
+        const response = await axios.post("/api/usuarios", values);
 
         if (response.status !== 200) {
         toast.error("Ops! Ha ocurrido un error");
         } else {
         toast.success("¡Perfil creado correctamente!");
+        router.refresh(); 
+        setOpen(false); 
         }
 
         router.refresh();

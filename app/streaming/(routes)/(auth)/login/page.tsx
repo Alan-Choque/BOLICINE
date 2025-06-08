@@ -26,7 +26,7 @@ export default async function LoginPage() {
 
       <div className="mt-4 flex gap-1">
         <p className="text-white opacity-70">¿Todavía sin Netflix?</p>
-        <Link href="/register" className="opacity-1 text-white">
+        <Link href="/streaming/register" className="opacity-1 text-white">
           Suscríbete ya
         </Link>
       </div>
