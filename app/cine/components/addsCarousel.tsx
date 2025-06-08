@@ -1,5 +1,8 @@
+"use client";
 import React from "react";
 import AddsCard from "./addsCard";
+import { Carousel, CarouselContent } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay"
 const adds = [
   {
     id: 39,
@@ -23,27 +26,21 @@ const adds = [
 
 const CarruselAdds = () => {
   return (
-    <div className="py-4">
-      <div className="flex overflow-x-auto space-x-4">
-        {adds.map((adds) => (
-          <AddsCard
-            key={adds.id}
-            title={adds.title}
-            description={adds.description}
-            imageUrl={adds.imageUrl}
-            href={`/cine/adds/${adds.id}`}
-          ></AddsCard>
-        ))}
-        <div className="absolute justify-between mt-34 flex w-full">
-          <button className="bg-gray-500 text-white rounded-lg hover:bg-blue-600">
-            Previous
-          </button>
-          <button className="bg-gray-500 text-white rounded-lg hover:bg-blue-600 ml-2">
-            Next
-          </button>
-        </div>
-      </div>
-    </div>
+    <>
+      <Carousel plugins={[Autoplay({delay: 4000})]}>
+        <CarouselContent>
+          {adds.map((adds) => (
+            <AddsCard
+              key={adds.id}
+              title={adds.title}
+              description={adds.description}
+              imageUrl={adds.imageUrl}
+              href={`/cine/adds/${adds.id}`}
+            ></AddsCard>
+          ))}
+        </CarouselContent>
+      </Carousel>
+    </>
   );
 };
 

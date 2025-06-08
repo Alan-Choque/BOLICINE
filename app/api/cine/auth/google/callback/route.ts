@@ -17,7 +17,7 @@ export async function GET(request: Request) {
     const clientSecret = process.env.GOOGLE_CLIENT_SECRET!;
     const redirectUri = process.env.GOOGLE_REDIRECT_URI!;
     
-    const tokenRes = await axios.post(
+    const tokenRes = await axios.post<{ id_token: string }>(
       "https://oauth2.googleapis.com/token",
       {
         code,

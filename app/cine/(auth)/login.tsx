@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Register from "./register";
 
 interface LoginProps {
@@ -57,10 +56,10 @@ export default function Login({ isOpen, onClose }: LoginProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 font-black">
       <div className="flex h-full w-full rounded-xl shadow-lg overflow-hidden">
         {/* Lado izquierdo */}
-        <div className="w-1/2 bg-red-500 p-12 text-white overflow-y-auto relative">
+        <div className="w-4/5 bg-red-500 p-12 text-white overflow-y-auto relative hidden md:flex">
           {/* Elemento decorativo curvo */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute -right-32 top-1/2 transform -translate-y-1/2 w-96 h-96">
@@ -143,7 +142,7 @@ export default function Login({ isOpen, onClose }: LoginProps) {
         </div>
 
         {/* Lado derecho (formulario) */}
-        <div className="relative w-1/2 bg-white p-12 overflow-y-auto">
+        <div className="relative bg-white p-12 overflow-y-auto md:flex w-full">
           <button
             onClick={onClose}
             className="absolute right-6 top-6 text-gray-600 hover:text-gray-800 z-20"
@@ -257,7 +256,7 @@ export default function Login({ isOpen, onClose }: LoginProps) {
                   Google
                 </button>
               </div>
-              <p className="text-center text-base pt-4">
+              <p className="text-center text-base pt-4 text-blue-800">
                 ¿No tienes cuenta?{" "}
                 <a
                   href="#"
