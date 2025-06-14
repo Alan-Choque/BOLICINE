@@ -15,14 +15,14 @@ export default function Home() {
         <div className="px-5">
           <CarruselAdds />
         </div>
-        <div className="py-6 px-5">
+        <div className="py-6 px-15">
           <h1 className="text-2xl font-bold mb-4">Estrenos</h1>
           <CarruselPeliculas />
         </div>
         <div className="py-6 px-5">
           <CarruselAdds />
         </div>
-        <div className="py-6 px-5">
+        <div className="py-6 px-15">
           <h1 className="text-2xl font-bold mb-4">Todas las peliculas</h1>
           <CarruselPeliculas />
         </div>

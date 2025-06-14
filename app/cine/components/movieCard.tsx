@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import React from "react";
 
 interface MovieCardsProps {
@@ -11,7 +12,11 @@ const MovieCard = ({ title, description, imageUrl, href }: MovieCardsProps) => {
   return (
     <Link href={href} className="">
       <div className="w-48 h-74 bg-gray-500 text-white flex items-center justify-center shadow-lg">
-        {title && <h2 className="text-lg font-bold mb-2">{title}</h2>}
+        <img
+          src={imageUrl}
+          alt={title}
+          className="object-cover w-full h-full"
+        />
       </div>
     </Link>
   );

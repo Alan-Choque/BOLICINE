@@ -11,7 +11,7 @@ import { useScrollPosition } from "@/hooks/useScrollPosition";
 import { useOnClickOutside } from "@/hooks/useOnClickOutside";
 import { NavbarDesktopProps } from "./NavbarDesktop.types";
 import { SelectorProfile } from "@/components/Shared/SelectorProfile";
-import { useDebounce } from "@/hooks/useDebounce"; // <-- 1. IMPORTAMOS EL HOOK DEBOUNCE
+import { useDebounce } from "@/hooks/useDebounce"   ; // <-- 1. IMPORTAMOS EL HOOK DEBOUNCE
 import { Movie } from "@/types/movies"; // <-- 2. IMPORTAMOS EL TIPO MOVIE
 
 export function NavbarDesktop(props: NavbarDesktopProps) {
