@@ -1,5 +1,7 @@
 import { Movie } from "@/types/movies";
 
-export type ListMoviesProps = {
-  movies: Movie[];
-};
+export interface ListMoviesProps {
+    movies: Movie[];
+    title: string; // <-- Prop para el título dinámico
+    isMyList?: boolean; // <-- Prop opcional para saber si es la lista de favoritos
+}

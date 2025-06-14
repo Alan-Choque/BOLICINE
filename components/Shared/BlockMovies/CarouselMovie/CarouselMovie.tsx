@@ -1,5 +1,4 @@
 import Image from "next/image";
-
 import {
     Carousel,
     CarouselContent,
@@ -8,10 +7,8 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
-
 import { ActionsButtons } from "./ActionsButtons";
 import { ChaptersInfo } from "./ChaptersInfo";
-
 import { CarouselMovieProps } from "./CarouselMovie.types";
 import { FilmGenres } from "./FilmGenres";
 
@@ -19,55 +16,68 @@ export function CarouselMovie(props: CarouselMovieProps) {
     const { movies, isMyList } = props;
 
     return (
-        <Carousel className="w-full">
-        <CarouselContent className="-ml-1 gap-2 overflow-inherit">
-            {movies.map((movie) => (
-            <CarouselItem
-                key={movie.id_pelicula}
-                className="pl-1 md:basis-1/2 lg:basis-1/5 transition delay-300 group relative hover:bg-transparent"
-            >
-                <Card className="cursor-pointer transition delay-300 group relative">
-                <CardContent className="flex aspect-video items-center justify-center p-6 relative border-none rounded-md bg-zinc-900">
-                    <Image
-                    src={movie.imagen_portada ? movie.imagen_portada.trimEnd() : '/bolicine/public/profiles/profile-1.png'}
-                    alt="Image"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="rounded-md"
-                    />
-                    <div
-                    className="opacity-0 absolute top-0 transition-all 
-                        duration-300 z-10 invisible sm:visible delay-300
-                        w-full bg-zinc-900 rounded-lg scale-0 origin-top
-                        group-hover:lg:scale-60 group-hover:md:scale-150    
-                        group-hover:-translate-y-[5vw] group-hover:opacity-100"
+        <Carousel opts={{ align: "start" }} className="w-full">
+            <CarouselContent className="-ml-4"> {/* Usando el -ml-4 por defecto de shadcn */}
+                {movies.map((movie) => (
+                    // 1. Contenedor principal del item
+                    <CarouselItem
+                        key={movie.id_pelicula}
+                        className="basis-1/2 md:basis-1/3 lg:basis-1/5 pl-4 group" // Añadido 'group' aquí
                     >
-                    <Image
-                        src={movie.imagen_portada ? movie.imagen_portada.trimEnd() : '/bolicine/public/profiles/profile-1.png'}
-                        alt="Movie"
-                        width={200}
-                        height={200}
-                        className="cursor-pointer object-cover transition-all duration-300 shadow-xl w-full rounded-t-lg"
-                    />
-                    <div className="p-2 shadow-lg min-h-[300px]">
-                        <ActionsButtons
-                        movieId={movie.id_pelicula}
-                        movie={movie}
-                        isMyList={isMyList}
-                        />
+                        {/* 2. La tarjeta flotante (hover) y la estática están en el mismo nivel */}
+                        <div className="relative"> {/* Contenedor relativo para posicionar la tarjeta flotante */}
+                            
+                            {/* Tarjeta Estática (lo que se ve por defecto) */}
+                            <Card className="rounded-md overflow-hidden">
+                                <CardContent className="p-0 aspect-video">
+                                    <Image
+                                        src={movie.imagen_portada ? movie.imagen_portada.trimEnd() : '/path/to/default.png'}
+                                        alt={movie.titulo}
+                                        layout="fill"
+                                        className="object-fit"
+                                    />
+                                </CardContent>
+                            </Card>
 
-                        <ChaptersInfo age={movie.age} duration={movie.duracion} />
-
-                        <FilmGenres genres={movie.genres} />
-                    </div>
-                    </div>
-                </CardContent>
-                </Card>
-            </CarouselItem>
-            ))}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+                            {/* 3. ✨ Tarjeta Flotante (la magia del hover) ✨ */}
+                            <div className="
+                                absolute top-0 left-0 w-full h-auto 
+                                opacity-0 invisible group-hover:visible group-hover:opacity-100 
+                                transition-all duration-300 ease-in-out
+                                transform origin-center 
+                                group-hover:scale-125 group-hover:-translate-y-[15%]
+                                z-50 rounded-lg overflow-hidden shadow-2xl bg-zinc-900
+                            ">
+                                {/* Adelanto de Video */}
+                                <div className="aspect-video w-full">
+                                    <video
+                                        src={movie.url_video} // Asegúrate de tener una URL del trailer
+                                        poster={movie.imagen_portada ? movie.imagen_portada.trimEnd() : '/path/to/default.png'}
+                                        autoPlay
+                                        muted
+                                        loop
+                                        playsInline // Importante para móviles
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
+                                
+                                {/* Contenido inferior con botones y info */}
+                                <div className="p-3">
+                                    <ActionsButtons
+                                        movieId={movie.id_pelicula}
+                                        movie={movie}
+                                        isMyList={isMyList}
+                                    />
+                                    <ChaptersInfo age={movie.age} duration={movie.duracion} />
+                                    <FilmGenres genres={movie.genres} />
+                                </div>
+                            </div>
+                        </div>
+                    </CarouselItem>
+                ))}
+            </CarouselContent>
+            <CarouselPrevious className="ml-14" /> {/* Ajuste para que no se superponga con el padding */}
+            <CarouselNext className="mr-14" /> {/* Ajuste para que no se superponga con el padding */}
         </Carousel>
     );
 }

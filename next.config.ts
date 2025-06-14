@@ -17,10 +17,40 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'novacode-portadas.b-cdn.net', // <-- ¡Añade este nuevo objeto para el dominio!
+        hostname: 'nova-portada.b-cdn.net', // <-- ¡Añade este nuevo objeto para el dominio!
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'nova-cartelera.b-cdn.net', // <-- ¡Añade este nuevo objeto para el dominio!
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'nova-pelicula-portada.b-cdn.net', // <-- ¡Añade este nuevo objeto para el dominio!
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'nova-peliculas.b-cdn.net',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'novacode-portadas.b-cdn.net',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'peliculas-nova.b-cdn.net',
+        port: '',
+        pathname: '/**',
+      }
       // Añade más objetos para otros dominios si los tienes
     ],
   },

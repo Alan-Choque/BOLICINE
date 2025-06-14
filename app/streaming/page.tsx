@@ -6,6 +6,7 @@ import { Perfil } from "./(routes)/profiles/components/Profiles/Profiles.types";
 import { RowDataPacket } from 'mysql2';
 import { Navbar } from "@/components/Shared/Navbar";
 import { TrendingMovies } from "./(routes)/(home)/components/TrendingMovies";
+import { MyListSection } from "./(routes)/(home)/components/MyListSection";
 import { ListMovies } from "../streaming/(routes)/(home)/components/ListMovies";
 import {Movie} from "@/types/movies";
 import SliderVideo from "../streaming/(routes)/(home)/components/SliderVideo/SliderVideo";
@@ -128,12 +129,74 @@ export default async function StreamingPage() {
   } catch (error) {
     console.error("Error al obtener películas populares:", error);
   }
+  const genresToDisplay = ["Acción", "Comedia", "Terror", "Ciencia ficción"];
+  const classificationsToDisplay = {
+        "TP": "Para todo público",
+        "M-13": "Recomendado para mayores de 13",
+        // Añade más mapeos si los necesitas
+    };
+
+    // 2. Objeto que almacenará nuestras listas de películas
+    const moviesByCategory: { [key: string]: Movie[] } = {};
+
+    // 3. Itera sobre el array `movies` que ya tienes y agrúpalas
+    movies.forEach(movie => {
+        // Agrupar por género
+        movie.genres.forEach(genre => {
+            if (genresToDisplay.includes(genre)) {
+                // Si la categoría (ej: "Acción") no existe en nuestro objeto, la creamos
+                if (!moviesByCategory[genre]) {
+                    moviesByCategory[genre] = [];
+                }
+                // Añadimos la película a su categoría
+                moviesByCategory[genre].push(movie);
+            }
+        });
+
+        // Agrupar por clasificación
+        const classificationTitle = classificationsToDisplay[movie.age as keyof typeof classificationsToDisplay];
+        if (classificationTitle) {
+            if (!moviesByCategory[classificationTitle]) {
+                moviesByCategory[classificationTitle] = [];
+            }
+            moviesByCategory[classificationTitle].push(movie);
+        }
+    });
+    const titleMap: { [key: string]: string } = {
+        "Acción": "Acción que te dejará sin aliento",
+        "Comedia": "Comedias para no parar de reír",
+        "Terror": "Terror que no te dejará dormir",
+        "Ciencia ficción": "Viajes a otros mundos: Ciencia Ficción",
+        "Para todo público": "Diversión para toda la familia",
+        "Recomendado para mayores de 13": "Contenido para adolescentes y más",
+        // Añade más mapeos para todas tus categorías
+    };
     return (
       <div className="relative bg-zinc-900">
         <Navbar users={userProfiles} />
         <SliderVideo/>
         <TrendingMovies movies={trendingMovies} />
-        <ListMovies movies={movies} />
+        <div className="py-8 space-y-6 md:space-y-6">
+                
+                
+                {/* Carrusel de "Mi Lista" (con lógica de cliente) */}
+                <MyListSection />
+                
+                {/* Carruseles dinámicos por Género y Clasificación */}
+                {Object.entries(moviesByCategory).map(([category, movieList]) => {
+                  const displayTitle = titleMap[category] || category;
+                  return (
+                    movieList.length > 0 && (
+                      <ListMovies 
+                          key={category} 
+                          title= {displayTitle} 
+                          movies={movieList}
+                          isMyList={false}
+                      />
+                      )
+                    )
+                })}
+            </div>
       </div>
   );
 }

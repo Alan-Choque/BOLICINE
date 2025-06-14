@@ -1,32 +1,26 @@
 "use client";
 
-import { useLovedFilms } from "@/hooks/use-loved-films";
-import { useCurrentNetflixUser } from "@/hooks/use-current-user";
-
+// Este componente debe ser simple y solo pasar datos a BlockMovies.
 import { BlockMovies } from "@/components/Shared/BlockMovies";
-
 import { ListMoviesProps } from "./ListMovies.types";
 
+// Debe recibir 'title' y 'movies' como props.
 export function ListMovies(props: ListMoviesProps) {
-    const { movies } = props;
-    const { lovedFilmsByUser } = useLovedFilms();
-    const { currentUser } = useCurrentNetflixUser();
+    const { movies, title, isMyList } = props;
 
-    const userNetflix = currentUser?.id;
-    const lovedFilms = userNetflix ? lovedFilmsByUser[userNetflix] : [];
+    // Si no hay películas, no se renderiza nada.
+    if (!movies || movies.length === 0) {
+        return null;
+    }
+    
 
+    // Solo debe renderizar UN BlockMovies, usando las props que recibe.
+    // Toda la lógica de 'useLovedFilms' DEBE SER ELIMINADA de este archivo.
     return (
-        <div>
         <BlockMovies
-            title="Películas favoritas"
-            movies={lovedFilms}
-            isMyList={true}
-        />
-        <BlockMovies
-            title="Películas más recientes"
+            title={title} // Usa el título que viene de las props
             movies={movies}
-            isMyList={false}
+            isMyList={isMyList || false}
         />
-        </div>
     );
 }

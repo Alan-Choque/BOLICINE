@@ -8,13 +8,13 @@ export function ChaptersInfo(props: ChaptersInfoProps) {
         if (age === "TP") {
         return "bg-green-500";
         }
-        if (age === "12") {
+        if (age === "7+") {
         return "bg-yellow-400 text-black";
         }
-        if (age === "16") {
+        if (age === "13+") {
         return "bg-orange-500";
         }
-        if (age === "18") {
+        if (age === "18+") {
         return "bg-red-600";
         }
     };
@@ -27,7 +27,7 @@ export function ChaptersInfo(props: ChaptersInfoProps) {
             colorByAge(age),
             )}
         >
-            +{age}
+            {age}
         </p>
         <p className="text-slate-50 text-[12px] flex items-center">{duration} min</p>
         <p className="border-[1px] border-gray-400 px-2 text-[0.5rem] text-gray-400 flex items-center rounded-md h-[15px]">

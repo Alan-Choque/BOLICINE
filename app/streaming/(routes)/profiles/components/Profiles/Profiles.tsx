@@ -35,7 +35,7 @@ export function Profiles(props: ProfilesProps) {
   // Asegúrate de que `user` sea del tipo `Perfil`
   const onClickUser = (user: Perfil) => { 
     changeCurrentUser(user); // Asegúrate de que `changeCurrentUser` espere el tipo `Perfil`
-    router.push("/");
+    router.push("/streaming");
   };
 
   const deleteProfile = async (profileIdToDelete: number) => { // Es el ID del perfil a eliminar (id_perfil)
