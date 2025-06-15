@@ -10,7 +10,7 @@ export function ActionsButtonsFilm(props: ActionsButtonsFilmProps) {
     const router = useRouter();
 
     const onPlayButton = () => {
-        router.push(`/movie/${idFilm}`);
+        router.push(`/streaming/movie/${idFilm}`);
     };
 
     return (

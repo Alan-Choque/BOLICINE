@@ -26,35 +26,32 @@ import { useCurrentNetflixUser } from "@/hooks/use-current-user";
 import { Perfil } from "./Profiles.types";
 
 export function Profiles(props: ProfilesProps) {
-  const { users } = props; // `users` es ahora `Perfil[]`
-  const { changeCurrentUser } = useCurrentNetflixUser();
+    const { users } = props;
+    const { changeCurrentUser } = useCurrentNetflixUser();
 
-  const [manageProfiles, setManageProfiles] = useState(false);
-  const router = useRouter();
+    const [manageProfiles, setManageProfiles] = useState(false);
+    const router = useRouter();
+    const onClickUser = (user: Perfil) => { 
+        changeCurrentUser(user);
+        router.push("/streaming");
+    };
 
-  // Asegúrate de que `user` sea del tipo `Perfil`
-  const onClickUser = (user: Perfil) => { 
-    changeCurrentUser(user); // Asegúrate de que `changeCurrentUser` espere el tipo `Perfil`
-    router.push("/streaming");
-  };
-
-  const deleteProfile = async (profileIdToDelete: number) => { // Es el ID del perfil a eliminar (id_perfil)
-    try {
-      // ✅ Llama a la nueva ruta /api/usuarios
-      await axios.request({
-        method: 'DELETE', // Especifica el método DELETE
-        url: '/api/usuarios', // La URL de tu API Route
-        data: { profileId: profileIdToDelete } // Aquí la propiedad 'data' es perfectamente válida
-      });
-      toast.success("Perfil eliminado correctamente."); 
-      setManageProfiles(false);
-      router.refresh(); // Refresca la página para mostrar los perfiles actualizados
-    } catch (error: any) { 
-      console.error("Error al eliminar perfil:", error);
-      const errorMessage = error.response?.data?.message || "Ops! Ha ocurrido un error al eliminar el perfil.";
-      toast.error(errorMessage);
-    }
-  };
+    const deleteProfile = async (profileIdToDelete: number) => {
+        try {
+        await axios.request({
+            method: 'DELETE',
+            url: '/api/usuarios',
+            data: { profileId: profileIdToDelete }
+        });
+        toast.success("Perfil eliminado correctamente."); 
+        setManageProfiles(false);
+        router.refresh();
+        } catch (error: any) { 
+        console.error("Error al eliminar perfil:", error);
+        const errorMessage = error.response?.data?.message || "Ops! Ha ocurrido un error al eliminar el perfil.";
+        toast.error(errorMessage);
+        }
+    };
 
     return (
         <div>

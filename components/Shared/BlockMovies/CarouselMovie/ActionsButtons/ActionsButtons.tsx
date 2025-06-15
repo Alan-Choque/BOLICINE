@@ -14,7 +14,7 @@ export function ActionsButtons(props: ActionsButtonsProps) {
     const router = useRouter();
 
     const onPlayButton = () => {
-        router.push(`/movie/${movieId}`);
+        router.push(`/streaming/movie/${movieId}`);
     };
 
     const onAddToMyList = () => {

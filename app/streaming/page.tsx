@@ -9,6 +9,7 @@ import { TrendingMovies } from "./(routes)/(home)/components/TrendingMovies";
 import { MyListSection } from "./(routes)/(home)/components/MyListSection";
 import { ListMovies } from "../streaming/(routes)/(home)/components/ListMovies";
 import {Movie} from "@/types/movies";
+import { getRandomMovies } from "@/data/movies";
 import SliderVideo from "../streaming/(routes)/(home)/components/SliderVideo/SliderVideo";
 
 export default async function StreamingPage() {
@@ -171,6 +172,7 @@ export default async function StreamingPage() {
         "Recomendado para mayores de 13": "Contenido para adolescentes y más",
         // Añade más mapeos para todas tus categorías
     };
+    const recommendedMovies = await getRandomMovies({ limit: 20 });
     return (
       <div className="relative bg-zinc-900">
         <Navbar users={userProfiles} />
@@ -181,7 +183,9 @@ export default async function StreamingPage() {
                 
                 {/* Carrusel de "Mi Lista" (con lógica de cliente) */}
                 <MyListSection />
-                
+                {recommendedMovies.length > 0 &&
+                <ListMovies title="Recomendados para ti" movies={recommendedMovies} />
+                }
                 {/* Carruseles dinámicos por Género y Clasificación */}
                 {Object.entries(moviesByCategory).map(([category, movieList]) => {
                   const displayTitle = titleMap[category] || category;

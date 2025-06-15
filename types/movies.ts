@@ -5,7 +5,6 @@ export interface Movie {
   sinopsis: string;
   duracion: number;
   fecha_lanzamiento: string;
-  id_productora: number | null;
   tipo_contenido: string;
   imagen_portada: string | null;
   url_video: string | null;

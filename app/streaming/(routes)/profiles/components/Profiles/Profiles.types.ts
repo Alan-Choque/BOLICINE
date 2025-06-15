@@ -1,6 +1,6 @@
 export interface Perfil {
     id: number;
-    profileName: string; // Corresponde a nombre_perfil
+    profileName: string;
     avatarUrl: string | null;
 };
 

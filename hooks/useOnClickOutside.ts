@@ -9,11 +9,10 @@ export const useOnClickOutside = <T extends HTMLElement = HTMLElement>(
     useEffect(() => {
         const listener = (event: Event) => {
             const el = ref?.current;
-            // No hagas nada si el clic es en el propio elemento o sus descendientes
             if (!el || el.contains((event?.target as Node) || null)) {
                 return;
             }
-            handler(event); // Llama al handler que pasamos (en nuestro caso, setIsSearchOpen(false))
+            handler(event);
         };
 
         document.addEventListener('mousedown', listener);
@@ -23,5 +22,5 @@ export const useOnClickOutside = <T extends HTMLElement = HTMLElement>(
             document.removeEventListener('mousedown', listener);
             document.removeEventListener('touchstart', listener);
         };
-    }, [ref, handler]); // Vuelve a ejecutar el efecto si el ref o el handler cambian
+    }, [ref, handler]);
 };

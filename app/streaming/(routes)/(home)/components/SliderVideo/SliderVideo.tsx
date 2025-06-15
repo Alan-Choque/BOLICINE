@@ -8,10 +8,11 @@ export default function SliderVideo() {
             <div className="flex flex-col justify-end absolute w-full md:w-[36%] px-4 py-8 md:px0 md:left-[4%] z-20 top-0 -bottom-7 md:bottom-[36%]">
                 <div className="pt-24 md:pt-0">
                     <h2 className="text-2xl md:text-5xl lg:text-8xl font-bold drop-shadow-xl">
-                        Boli MAX
+                        Cinebol+
                     </h2>
                     <p className="max-w-md mt-2 text-xs md:text-base">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse provident dolore aspernatur, nostrum mollitia fuga natus vel sint in repellat quis ea dolorem, praesentium rem impedit veniam, tempora nisi autem.
+                        CineBol: Donde cada función es una experiencia única.
+Disfruta películas nacionales e internacionales, ahora también desde la comodidad de tu hogar, con acceso rápido, seguro y personalizado.
                     </p>
                     <div className="flex flex-col md:flex-row gap-4 mt-5">
                         <Button size="lg" variant="secondary">

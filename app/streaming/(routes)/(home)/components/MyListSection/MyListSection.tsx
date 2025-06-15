@@ -2,22 +2,25 @@
 
 import { useLovedFilms } from "@/hooks/use-loved-films";
 import { useCurrentNetflixUser } from "@/hooks/use-current-user";
-import { ListMovies } from "../ListMovies"; // <-- Reutilizamos nuestro nuevo ListMovies genérico
+import { ListMovies } from "../ListMovies";
 import { Movie } from "@/types/movies";
 
 export function MyListSection() {
     const { lovedFilmsByUser } = useLovedFilms();
     const { currentUser } = useCurrentNetflixUser();
-
     const userNetflixId = currentUser?.id;
-    const lovedFilms: Movie[] = userNetflixId ? lovedFilmsByUser[userNetflixId] : [];
-
-    // Si no hay películas en "Mi Lista", no mostramos nada.
-    if (lovedFilms.length === 0) {
-        return null;
+    let lovedFilms: Movie[] = [];
+    if (userNetflixId && lovedFilmsByUser) {
+        lovedFilms = lovedFilmsByUser[userNetflixId] ?? [];
     }
-
-    // Ahora llamamos a nuestro ListMovies genérico para mostrar los datos
+    if (lovedFilms.length === 0) {
+        return (
+            <div className="text-center text-gray-400 mt-10">
+                <p className="text-xl">Tu lista está vacía.</p>
+                <p className="text-md mt-2">Añade series y películas a `Mi Lista` para verlas aquí.</p>
+            </div>
+        );
+    }
     return (
         <ListMovies
             title="Mi Lista"
